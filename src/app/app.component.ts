@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { initFlowbite } from 'flowbite';
-import { AuthService } from './modules/auth/_services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +8,7 @@ import { AuthService } from './modules/auth/_services/auth.service';
 export class AppComponent implements OnInit {
   title = 'team-work-client';
 
-  constructor() {
-    // this.authService.getUserByToken().subscribe((res) => {
-    //   console.log(res);
-    // });
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-    initFlowbite();
-  }
+  ngOnInit(): void {}
 }

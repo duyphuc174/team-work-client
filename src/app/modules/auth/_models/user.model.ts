@@ -24,7 +24,7 @@ export class UserModel extends AuthModel {
     this.email = data.email;
     this.phone = data.phoneNumber;
     this.fullName = this.firstName + ' ' + this.lastName;
-    this.avatar = data.avatar;
+    this.avatar = data.avatar || 'https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png';
     this.birthday = data.birthday;
     this.address = data.address || '';
     this.description = data.description || '';

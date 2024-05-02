@@ -7,13 +7,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from './modules/auth/_services/auth.service';
 import { environment } from 'src/environments/environment';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { InterceptService } from './intercept.service';
+import { FormsModule } from '@angular/forms';
+import { initFlowbite } from 'flowbite';
 
 const BASE_URL = new InjectionToken<string>('');
 
 function appInitializer(authService: AuthService) {
   return () => {
     return new Promise((resolve: any) => {
+      initFlowbite();
       authService
         .getUserByToken()
         .subscribe()
@@ -24,7 +28,15 @@ function appInitializer(authService: AuthService) {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [CommonModule, BrowserModule, AppRoutingModule, BrowserAnimationsModule, MatDialogModule, HttpClientModule],
+  imports: [
+    CommonModule,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    HttpClientModule,
+    FormsModule,
+  ],
   providers: [
     {
       provide: APP_INITIALIZER,
@@ -32,10 +44,15 @@ function appInitializer(authService: AuthService) {
       multi: true,
       deps: [AuthService],
     },
-    // {
-    //   provide: BASE_URL,
-    //   useValue: environment.apiUrl,
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptService,
+      multi: true,
+    },
+    {
+      provide: BASE_URL,
+      useValue: environment.apiUrl,
+    },
   ],
   bootstrap: [AppComponent],
 })

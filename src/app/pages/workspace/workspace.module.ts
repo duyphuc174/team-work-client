@@ -11,9 +11,22 @@ import { WorkspaceMemberListComponent } from './components/workspace-member-list
 import { WorkspaceMemberListItemComponent } from './components/workspace-member-list-item/workspace-member-list-item.component';
 import { WorkspaceWorkListComponent } from './components/workspace-work-list/workspace-work-list.component';
 import { WorkspaceWorkListItemComponent } from './components/workspace-work-list-item/workspace-work-list-item.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WorkspaceMemberAddComponent } from './components/workspace-member-add/workspace-member-add.component';
 
 @NgModule({
-  declarations: [WorkspaceComponent, WorkspaceListComponent, WorkspaceListItemComponent, WorkspaceCreateComponent, WorkspaceMemberListComponent, WorkspaceMemberListItemComponent, WorkspaceWorkListComponent, WorkspaceWorkListItemComponent],
-  imports: [CommonModule, WorkspaceRoutingModule, PartialsModule],
+  declarations: [
+    WorkspaceComponent,
+    WorkspaceListComponent,
+    WorkspaceListItemComponent,
+    WorkspaceCreateComponent,
+    WorkspaceMemberListComponent,
+    WorkspaceMemberListItemComponent,
+    WorkspaceWorkListComponent,
+    WorkspaceWorkListItemComponent,
+    WorkspaceMemberAddComponent,
+  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, WorkspaceRoutingModule, PartialsModule, HttpClientModule],
 })
 export class WorkspaceModule {}

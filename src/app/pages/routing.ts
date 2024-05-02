@@ -13,6 +13,10 @@ const Routing: Routes = [
     path: 'notifications',
     loadChildren: () => import('./notification/notification.module').then((m) => m.NotificationModule),
   },
+  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then((m) => m.ProfileModule),
+  },
 ];
 
 export { Routing };

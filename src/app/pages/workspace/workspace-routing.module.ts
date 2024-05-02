@@ -19,10 +19,7 @@ const routes: Routes = [
         path: 'list',
         component: WorkspaceListComponent,
       },
-      {
-        path: 'members',
-        component: WorkspaceMemberListComponent,
-      },
+
       {
         path: ':id',
         children: [
@@ -30,6 +27,15 @@ const routes: Routes = [
             path: 'works',
             component: WorkspaceWorkListComponent,
           },
+          {
+            path: 'members',
+            component: WorkspaceMemberListComponent,
+          },
+          {
+            path: '',
+            redirectTo: 'works',
+            pathMatch: 'full',
+          }
         ],
       },
     ],
