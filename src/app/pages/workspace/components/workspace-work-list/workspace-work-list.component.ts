@@ -1,20 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WorkspaceService } from '../../_services/workspace.service';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { SprintModel } from '../../_models/workspace.model';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-workspace-work-list',
   templateUrl: './workspace-work-list.component.html',
   styleUrls: ['./workspace-work-list.component.scss'],
 })
-export class WorkspaceWorkListComponent {
+export class WorkspaceWorkListComponent implements OnInit {
+  sprintsSubject: BehaviorSubject<SprintModel[]> = new BehaviorSubject<SprintModel[]>([]);
+  sprints$: Observable<SprintModel[]> = this.sprintsSubject.asObservable();
+
   constructor(private workspaceService: WorkspaceService, private activedRoute: ActivatedRoute) {
     this.activedRoute.params.subscribe((params: any) => {
       const workspaceId = +params.id;
       if (workspaceId) {
         this.workspaceService.getWorkspaceById(workspaceId).subscribe((workspace) => {
-          console.log(workspace);
+          this.loadData();
         });
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    initFlowbite();
+  }
+
+  loadData() {
+    this.workspaceService.getSprints().subscribe((sprints) => {
+      if (sprints) {
+        this.sprintsSubject.next(sprints);
       }
     });
   }

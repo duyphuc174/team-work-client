@@ -6,8 +6,8 @@ import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/co
   styleUrls: ['./header-title.component.scss'],
 })
 export class HeaderTitleComponent {
-  @Input() breadcrumbTemplate: TemplateRef<any>;
   @Input() buttonName: string;
+  @Input() secondBreadcrumb: string;
   @Output() handleClick: EventEmitter<any> = new EventEmitter<any>(null);
 
   onClick() {

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { initFlowbite } from 'flowbite';
+import { CommonService } from './modules/partials/_services/common.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +10,14 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'team-work-client';
 
-  constructor() {}
+  constructor(private commonService: CommonService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadData();
+    initFlowbite();
+  }
+
+  loadData() {
+    this.commonService.getImportants().subscribe((res) => {});
+  }
 }

@@ -1,4 +1,4 @@
-<app-header-title [title]="'Members'"></app-header-title>
+<app-header-title [secondBreadcrumb]="'Danh sách thành viên'"></app-header-title>
 
 <section class="bg-gray-50 dark:bg-gray-900">
   <div class="mx-auto max-w">
@@ -216,12 +216,8 @@
                       <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                     </div>
                   </td>
-                  <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    <img class="w-10 h-10 rounded-full" alt="Jese image" [src]="member.user.avatar" />
-                    <div class="ps-3">
-                      <div class="text-base font-semibold">{{ member.user.fullName }}</div>
-                      <div class="font-normal text-gray-500">{{ member.user.email }}</div>
-                    </div>
+                  <th scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    <app-user-avatar-infor [user]="member.user"></app-user-avatar-infor>
                   </th>
                   <th class="px-6 py-4">{{ member.user.phone }}</th>
                   <td class="px-6 py-4">

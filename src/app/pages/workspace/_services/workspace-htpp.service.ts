@@ -31,4 +31,12 @@ export class WorkspaceHtppService {
   addMemberToWorkspace(id: number, userIds: number[]): Observable<any> {
     return this.http.post<any>(`${API_WORKSPACE_URL}/${id}/members`, { userIds });
   }
+
+  createSprint(id: number, data: any): Observable<any> {
+    return this.http.post<any>(`${API_WORKSPACE_URL}/${id}/sprints`, data);
+  }
+
+  getSprints(id: number, params?: any): Observable<any> {
+    return this.http.get<any>(`${API_WORKSPACE_URL}/${id}/sprints`, { params });
+  }
 }

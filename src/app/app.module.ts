@@ -10,14 +10,12 @@ import { environment } from 'src/environments/environment';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InterceptService } from './intercept.service';
 import { FormsModule } from '@angular/forms';
-import { initFlowbite } from 'flowbite';
 
 const BASE_URL = new InjectionToken<string>('');
 
 function appInitializer(authService: AuthService) {
   return () => {
     return new Promise((resolve: any) => {
-      initFlowbite();
       authService
         .getUserByToken()
         .subscribe()

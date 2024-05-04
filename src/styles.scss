@@ -67,3 +67,11 @@ $team-work-client-theme: mat.define-light-theme(
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.border-danger {
+  border-color: #f05252 !important;
+}
+
+.border-success {
+  border-color: #00d68f !important;
+}

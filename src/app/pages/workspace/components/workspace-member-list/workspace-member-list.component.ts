@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { MemberModel, WorkspaceModel, tranformRoleBagdeClass } from '../../_models/workspace.model';
 import { MatDialog } from '@angular/material/dialog';
 import { WorkspaceMemberAddComponent } from '../workspace-member-add/workspace-member-add.component';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-workspace-member-list',
@@ -36,7 +37,7 @@ export class WorkspaceMemberListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.openAddMemberModal();
+    initFlowbite();
   }
 
   openAddMemberModal() {

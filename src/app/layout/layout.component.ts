@@ -8,6 +8,6 @@ import { initFlowbite } from 'flowbite';
 })
 export class LayoutComponent implements OnInit {
   ngOnInit(): void {
-    initFlowbite();
+    console.log('layout');
   }
 }

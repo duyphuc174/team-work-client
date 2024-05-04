@@ -42,6 +42,74 @@ export class MemberModel {
   }
 }
 
+export class SprintModel {
+  id: number;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+
+  setData(data) {
+    this.id = data.id;
+    this.name = data.name;
+    this.startDate = new Date(data.startDate);
+    this.endDate = new Date(data.endDate);
+  }
+}
+
+export class WorkModel {
+  id: number;
+  title: string;
+  description: string;
+  follower: UserModel;
+  status: string;
+  important: ImportantModel;
+  startDate: Date;
+  endDate: Date;
+  setData(data) {
+    this.id = data.id;
+    this.title = data.title;
+    this.description = data.description;
+    this.startDate = new Date(data.startDate);
+    this.endDate = new Date(data.endDate);
+    this.status = data.status;
+    if (data.follower.id) {
+      const user = new UserModel();
+      user.setData(data.follower);
+      this.follower = user;
+    }
+    if (data.important) {
+      const i = new ImportantModel();
+      i.setData(data.important);
+      this.important = i;
+    }
+  }
+}
+
+export class ImportantModel {
+  id: number;
+  level: number;
+  name: string;
+
+  setData(data) {
+    this.id = data.id;
+    this.level = data.level || 1;
+    if (data.level) {
+      this.name = getImportantName(data.level);
+    }
+  }
+}
+
+function getImportantName(level: number) {
+  switch (level) {
+    case 1:
+      return 'Bình thường';
+    case 2:
+      return 'Quan trọng';
+    default:
+      return 'Rất quan trọng';
+  }
+}
+
 export function getMemberRoleName(role: string) {
   switch (role) {
     case 'creator':

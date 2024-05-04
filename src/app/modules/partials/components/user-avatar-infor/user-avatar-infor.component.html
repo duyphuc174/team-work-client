@@ -1,0 +1,9 @@
+<ng-container *ngIf="user.id">
+  <div class="flex items-center">
+    <img class="w-10 h-10 rounded-full" alt="Jese image" [src]="user.avatar" />
+    <div class="ps-3" *ngIf="showName">
+      <div class="text-base font-semibold">{{ user.fullName }}</div>
+      <div class="font-normal text-gray-500">{{ user.email }}</div>
+    </div>
+  </div>
+</ng-container>
