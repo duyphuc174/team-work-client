@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { WorkspaceService } from '../../_services/workspace.service';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MemberModel, WorkspaceModel, tranformRoleBagdeClass } from '../../_models/workspace.model';
-import { MatDialog } from '@angular/material/dialog';
+import { MemberModel, WorkspaceModel, getMemberRoleName, tranformRoleBagdeClass } from '../../_models/workspace.model';
 import { WorkspaceMemberAddComponent } from '../workspace-member-add/workspace-member-add.component';
-import { initFlowbite } from 'flowbite';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-workspace-member-list',
@@ -20,27 +19,35 @@ export class WorkspaceMemberListComponent implements OnInit {
   members$: Observable<MemberModel[]> = this.membersSubject.asObservable();
 
   transformRoleBagde = tranformRoleBagdeClass;
+  getMemberRoleName = getMemberRoleName;
 
   constructor(
     private workspaceService: WorkspaceService,
     private activedRoute: ActivatedRoute,
-    public dialog: MatDialog,
+    private bsModalService: BsModalService,
   ) {
     this.activedRoute.params.subscribe((params: any) => {
       this.workspaceId = +params.id;
       if (this.workspaceId) {
-        this.workspaceService.getWorkspaceById(this.workspaceId).subscribe((workspace) => {
-          this.membersSubject.next(workspace.members);
-        });
+        this.loadData();
       }
     });
   }
 
-  ngOnInit(): void {
-    initFlowbite();
+  ngOnInit(): void {}
+
+  loadData() {
+    this.workspaceService.getWorkspaceById(this.workspaceId).subscribe((workspace) => {
+      this.membersSubject.next(workspace.members);
+    });
   }
 
   openAddMemberModal() {
-    this.dialog.open(WorkspaceMemberAddComponent, { position: { top: '100px' } });
+    const bsModalRef = this.bsModalService.show(WorkspaceMemberAddComponent, {});
+    bsModalRef.content.onClose$.subscribe((res) => {
+      if (res) {
+        this.loadData();
+      }
+    });
   }
 }

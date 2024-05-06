@@ -13,10 +13,22 @@ export class WorkHttpService {
   constructor(private http: HttpClient) {}
 
   getWorks(sprintId: number): Observable<any> {
-    return this.http.get<any>(`${API_WORK_URL}/${sprintId}`);
+    return this.http.get<any>(`${API_WORK_URL}/sprint/${sprintId}`);
   }
 
   createWork(data: any): Observable<any> {
     return this.http.post<any>(API_WORK_URL, data);
+  }
+
+  getWorkById(id: number): Observable<any> {
+    return this.http.get<any>(`${API_WORK_URL}/${id}`);
+  }
+
+  updateWork(id: number, data: any): Observable<any> {
+    return this.http.post<any>(`${API_WORK_URL}/${id}`, data);
+  }
+
+  deleteWork(id: number): Observable<any> {
+    return this.http.delete<any>(`${API_WORK_URL}/${id}`);
   }
 }

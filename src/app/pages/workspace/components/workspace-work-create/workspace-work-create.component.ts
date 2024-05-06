@@ -1,17 +1,16 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ImportantModel, MemberModel, SprintModel } from '../../_models/workspace.model';
 import { CommonService } from 'src/app/modules/partials/_services/common.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WorkService } from '../../_services/work.service';
-import { UserService } from 'src/app/modules/auth/_services/user.service';
 import { AuthService } from 'src/app/modules/auth/_services/auth.service';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { MemberService } from '../../_services/member.service';
 import { WorkspaceService } from '../../_services/workspace.service';
-import { formatDate } from '@angular/common';
 import * as moment from 'moment';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { WorkModel } from '../../_models/work.model';
 
 @Component({
   selector: 'app-workspace-work-create',
@@ -19,6 +18,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./workspace-work-create.component.scss'],
 })
 export class WorkspaceWorkCreateComponent implements OnInit {
+  work: WorkModel;
   importants$: Observable<ImportantModel[]> = new Observable<ImportantModel[]>();
   userLogged: UserModel;
   membersSubject: BehaviorSubject<MemberModel[]> = new BehaviorSubject<MemberModel[]>([]);
@@ -26,6 +26,8 @@ export class WorkspaceWorkCreateComponent implements OnInit {
   sprintsSubject: BehaviorSubject<SprintModel[]> = new BehaviorSubject<SprintModel[]>([]);
   sprints$: Observable<SprintModel[]> = this.sprintsSubject.asObservable();
   currentSprint: SprintModel;
+  followers: UserModel[] = [];
+  onClose$: Subject<any> = new Subject<any>();
   form: FormGroup;
 
   constructor(
@@ -35,12 +37,9 @@ export class WorkspaceWorkCreateComponent implements OnInit {
     private workService: WorkService,
     private memberService: MemberService,
     private workspaceService: WorkspaceService,
-    private dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    public bsModalRef: BsModalRef,
   ) {
-    if (data.sprint) {
-      this.currentSprint = data.sprint;
-    } else {
+    if (!this.currentSprint) {
       this.workspaceService.getSprints().subscribe((sprints) => {
         if (sprints) {
           this.sprintsSubject.next(sprints);
@@ -52,6 +51,9 @@ export class WorkspaceWorkCreateComponent implements OnInit {
   ngOnInit(): void {
     this.userLogged = this.auth.currentUserValue;
     this.loadData();
+    this.importants$.subscribe((importants) => {
+      console.log(importants);
+    });
     this.initForm();
   }
 
@@ -65,6 +67,13 @@ export class WorkspaceWorkCreateComponent implements OnInit {
     this.memberService.getMembersByWorkspaceId(workspaceId).subscribe((members) => {
       if (members) {
         this.membersSubject.next(members);
+        this.followers = members.map((member) => {
+          const u = member.user;
+          if (u.id === this.userLogged.id) {
+            u.fullName = u.fullName + ' (tôi)';
+          }
+          return u;
+        });
       }
     });
   }
@@ -75,12 +84,12 @@ export class WorkspaceWorkCreateComponent implements OnInit {
 
   initForm() {
     this.form = this.fb.group({
-      title: ['', [Validators.required]],
-      description: [''],
-      importantId: [1, [Validators.required]],
-      followerId: [this.userLogged.id, [Validators.required]],
-      startDate: [null],
-      endDate: [null],
+      title: [this.work?.title || '', [Validators.required]],
+      description: [this.work?.description || ''],
+      importantId: [this.work?.important?.id || 1, [Validators.required]],
+      followerId: [this.work?.follower?.id || this.userLogged.id, [Validators.required]],
+      startDate: [this.work?.startDate || null],
+      endDate: [this.work?.endDate || null],
     });
   }
 
@@ -96,11 +105,21 @@ export class WorkspaceWorkCreateComponent implements OnInit {
       sprintId: this.currentSprint.id,
     };
 
-    this.workService.createWork(formSubmit).subscribe((work) => {
-      if (work) {
-        this.dialogRef.close(work);
-      }
-    });
+    if (this.work?.id) {
+      this.workService.updateWork(this.work.id, formSubmit).subscribe((res) => {
+        if (res.success) {
+          this.onClose$.next(res.success);
+          this.bsModalRef?.hide();
+        }
+      });
+    } else {
+      this.workService.createWork(formSubmit).subscribe((work) => {
+        if (work) {
+          this.onClose$.next(work);
+          this.bsModalRef?.hide();
+        }
+      });
+    }
   }
 
   controls(name: string) {

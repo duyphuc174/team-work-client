@@ -1,5 +1,13 @@
-<app-header></app-header>
+<main id="main-layout">
+  <div class="d-flex flex-column h-100">
+    <app-header></app-header>
 
-<app-aside></app-aside>
+    <div class="d-flex flex-row w-100 h-100 position-relative">
+      <app-aside></app-aside>
 
-<app-content></app-content>
+      <div id="content" class="w-100 h-100">
+        <app-content></app-content>
+      </div>
+    </div>
+  </div>
+</main>

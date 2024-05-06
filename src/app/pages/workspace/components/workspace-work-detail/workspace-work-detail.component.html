@@ -1,0 +1,40 @@
+<app-header-title [title]="'Chi tiết công việc'" [buttonName]="'Chỉnh sửa'" [buttonDelete]="'Xóa'"></app-header-title>
+<div class="card">
+  <div class="card-body">
+    <ng-container *ngIf="work$ | async as work">
+      <div class="">
+        <div class="mb-3">
+          <div class="d-flex flex-row justify-content-between">
+            <h5 class="mb-0">{{ work.title }}</h5>
+            <span>Chu kỳ: {{ work.sprint?.name }}</span>
+          </div>
+        </div>
+        <div class="d-flex flex-row mb-3">
+          <div class="btn-group" dropdown>
+            <button
+              id="button-basic"
+              dropdownToggle
+              type="button"
+              class="btn btn-primary btn-sm dropdown-toggle"
+              aria-controls="dropdown-basic"
+            >
+              {{ work.status }} <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+              <ng-container *ngFor="let status of workStatus | keyvalue">
+                <li role="menuitem">
+                  <a class="dropdown-item" href="#">{{ status.value }}</a>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+        <div class="mb-3">
+          <h6>Mô tả</h6>
+          <p>{{ work.description }}</p>
+        </div>
+      </div>
+    </ng-container>
+    <app-workspace-task-list [workId]="workId"></app-workspace-task-list>
+  </div>
+</div>

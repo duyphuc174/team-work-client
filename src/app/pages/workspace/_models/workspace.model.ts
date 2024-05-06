@@ -56,35 +56,6 @@ export class SprintModel {
   }
 }
 
-export class WorkModel {
-  id: number;
-  title: string;
-  description: string;
-  follower: UserModel;
-  status: string;
-  important: ImportantModel;
-  startDate: Date;
-  endDate: Date;
-  setData(data) {
-    this.id = data.id;
-    this.title = data.title;
-    this.description = data.description;
-    this.startDate = new Date(data.startDate);
-    this.endDate = new Date(data.endDate);
-    this.status = data.status;
-    if (data.follower.id) {
-      const user = new UserModel();
-      user.setData(data.follower);
-      this.follower = user;
-    }
-    if (data.important) {
-      const i = new ImportantModel();
-      i.setData(data.important);
-      this.important = i;
-    }
-  }
-}
-
 export class ImportantModel {
   id: number;
   level: number;
@@ -124,10 +95,10 @@ export function getMemberRoleName(role: string) {
 export function tranformRoleBagdeClass(role: string) {
   switch (role) {
     case 'creator':
-      return 'bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300';
+      return 'bg-primary';
     case 'admin':
-      return 'bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300';
+      return 'bg-success';
     default:
-      return 'bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300';
+      return 'bg-secondary';
   }
 }

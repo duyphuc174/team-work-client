@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-modal-header',
@@ -8,9 +8,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ModalHeaderComponent {
   @Input() title: string;
-  constructor(public dialogRef: MatDialogRef<any>) {}
+  constructor(public bsModalRef: BsModalRef) {}
 
   closeModal() {
-    this.dialogRef.close();
+    this.bsModalRef?.hide();
   }
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-content',
@@ -7,7 +6,5 @@ import { initFlowbite } from 'flowbite';
   styleUrls: ['./content.component.scss'],
 })
 export class ContentComponent implements OnInit {
-  ngOnInit(): void {
-    initFlowbite();
-  }
+  ngOnInit(): void {}
 }

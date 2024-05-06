@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { initDropdowns } from 'flowbite';
 import { Observable } from 'rxjs';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { AuthService } from 'src/app/modules/auth/_services/auth.service';
@@ -16,7 +15,5 @@ export class ProfileInformationCardComponent implements OnInit {
     this.userLogger$ = this.authService.currentUser$;
   }
 
-  ngOnInit(): void {
-    initDropdowns();
-  }
+  ngOnInit(): void {}
 }

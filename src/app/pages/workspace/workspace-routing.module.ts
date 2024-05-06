@@ -4,6 +4,8 @@ import { WorkspaceComponent } from './workspace.component';
 import { WorkspaceListComponent } from './components/workspace-list/workspace-list.component';
 import { WorkspaceMemberListComponent } from './components/workspace-member-list/workspace-member-list.component';
 import { WorkspaceWorkListComponent } from './components/workspace-work-list/workspace-work-list.component';
+import { WorkspaceWorkDetailComponent } from './components/workspace-work-detail/workspace-work-detail.component';
+import { WorkspaceWorkComponent } from './components/workspace-work/workspace-work.component';
 
 const routes: Routes = [
   {
@@ -25,7 +27,17 @@ const routes: Routes = [
         children: [
           {
             path: 'works',
-            component: WorkspaceWorkListComponent,
+            component: WorkspaceWorkComponent,
+            children: [
+              {
+                path: '',
+                component: WorkspaceWorkListComponent,
+              },
+              {
+                path: ':id',
+                component: WorkspaceWorkDetailComponent,
+              },
+            ],
           },
           {
             path: 'members',
@@ -35,7 +47,7 @@ const routes: Routes = [
             path: '',
             redirectTo: 'works',
             pathMatch: 'full',
-          }
+          },
         ],
       },
     ],

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { initFlowbite } from 'flowbite';
+import { Component, HostBinding, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-layout',
@@ -7,7 +6,6 @@ import { initFlowbite } from 'flowbite';
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit {
-  ngOnInit(): void {
-    console.log('layout');
-  }
+  @HostBinding('class') class = 'd-content';
+  ngOnInit(): void {}
 }

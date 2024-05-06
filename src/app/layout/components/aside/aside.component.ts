@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { WorkspaceService } from 'src/app/pages/workspace/_services/workspace.service';
 
 @Component({
@@ -7,6 +7,7 @@ import { WorkspaceService } from 'src/app/pages/workspace/_services/workspace.se
   styleUrls: ['./aside.component.scss'],
 })
 export class AsideComponent {
+  @HostBinding('class') class = 'position-relative';
   workspaceId: number;
   constructor(private workspaceService: WorkspaceService) {
     this.workspaceService.currentWorkspace$.subscribe((workspace) => {

@@ -6,7 +6,7 @@ const Routing: Routes = [
     loadChildren: () => import('./board/board.module').then((m) => m.BoardModule),
   },
   {
-    path: 'workspace',
+    path: 'workspaces',
     loadChildren: () => import('./workspace/workspace.module').then((m) => m.WorkspaceModule),
   },
   {

@@ -6,6 +6,8 @@ import { ModalHeaderComponent } from './components/modal-header/modal-header.com
 import { ModalFooterComponent } from './components/modal-footer/modal-footer.component';
 import { UserAvatarInforComponent } from './components/user-avatar-infor/user-avatar-infor.component';
 import { SelectUserComponent } from './components/select-user/select-user.component';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ModalConfirmDeleteComponent } from './components/modal-confirm-delete/modal-confirm-delete.component';
 
 @NgModule({
   declarations: [
@@ -14,8 +16,9 @@ import { SelectUserComponent } from './components/select-user/select-user.compon
     ModalFooterComponent,
     UserAvatarInforComponent,
     SelectUserComponent,
+    ModalConfirmDeleteComponent,
   ],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TooltipModule],
   exports: [
     HeaderTitleComponent,
     ModalHeaderComponent,

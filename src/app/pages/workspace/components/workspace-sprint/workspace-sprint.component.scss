@@ -1,0 +1,7 @@
+.work-hight-light {
+  cursor: pointer;
+  &:hover {
+    color: var(--bs-primary);
+    text-decoration: underline;
+  }
+}

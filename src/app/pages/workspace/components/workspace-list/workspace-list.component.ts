@@ -35,7 +35,7 @@ export class WorkspaceListComponent implements OnInit {
   }
 
   goToWorkspace(workspaceId: number) {
-    this.router.navigate([`/workspace/${workspaceId}`]);
+    this.router.navigate([`/workspaces/${workspaceId}`]);
   }
 
   openWorkspaceCreateModal() {

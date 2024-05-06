@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { UserService } from 'src/app/modules/auth/_services/user.service';
 import { WorkspaceService } from '../../_services/workspace.service';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-workspace-member-add',
@@ -18,8 +19,13 @@ export class WorkspaceMemberAddComponent {
   usersSelected: UserModel[] = [];
 
   inputValue: any;
+  onClose$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private userService: UserService, private workspaceService: WorkspaceService) {}
+  constructor(
+    private userService: UserService,
+    private workspaceService: WorkspaceService,
+    public bsModalRef: BsModalRef,
+  ) {}
 
   searchUsers(input: any) {
     const term = input.target.value;
@@ -58,7 +64,12 @@ export class WorkspaceMemberAddComponent {
 
   addUserToWorkspace() {
     const userIds = this.usersSelected.map((u) => u.id);
-    this.workspaceService.addWorkspaceMember(userIds).subscribe((res) => console.log(res));
+    this.workspaceService.addWorkspaceMember(userIds).subscribe((res) => {
+      if (res) {
+        this.onClose$.next(res);
+        this.bsModalRef.hide();
+      }
+    });
   }
 
   onInputChange(event: any) {

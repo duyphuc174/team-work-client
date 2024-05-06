@@ -1,130 +1,72 @@
-<div class="max-w bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-  <div class="" style="width: 700px">
-    <app-modal-header [title]="'Tạo công việc'"></app-modal-header>
-    <div class="p-5">
-      <form (ngSubmit)="submit()" [formGroup]="form">
-        <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
-          <div class="sm:col-span-2">
-            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên công việc</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Ví dụ: Code chức năng công việc"
-              required=""
-              formControlName="title"
-              [ngClass]="{ 'border-danger': controls('title')?.invalid }"
-            />
-          </div>
-          <div class="w-full">
-            <label for="followerId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Người theo dõi</label
-            >
-            <select
-              id="followerId"
-              formControlName="followerId"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <ng-container *ngIf="members$ | async as members">
-                <ng-container *ngFor="let member of members">
-                  <option value="{{ member.user.id }}">
-                    {{ member.user.fullName + ' - ' + member.user.email }}
-                    {{ userLogged.id === member.user.id ? ' (Bạn)' : '' }}
-                  </option>
-                </ng-container>
-              </ng-container>
-            </select>
-          </div>
-          <div class="w-full">
-            <label for="importants" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Mức độ quan trọng</label
-            >
-            <select
-              formControlName="importantId"
-              id="importants"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <ng-container *ngIf="importants$ | async as importants">
-                <ng-container *ngFor="let importance of importants">
-                  <option value="{{ importance.id }}">{{ importance.name }}</option>
-                </ng-container>
-              </ng-container>
-            </select>
-          </div>
-
-          <div class="w-full">
-            <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ngày bắt đầu</label>
-            <div class="relative max-w-sm">
-              <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                <svg
-                  class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
-                  />
-                </svg>
-              </div>
-              <input
-                formControlName="startDate"
-                type="date"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Select date"
-              />
-            </div>
-          </div>
-          <div class="w-full">
-            <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Ngày kết thúc</label
-            >
-            <div class="relative max-w-sm">
-              <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                <svg
-                  class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
-                  />
-                </svg>
-              </div>
-              <input
-                formControlName="endDate"
-                type="date"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Select date"
-              />
-            </div>
-          </div>
-
-          <div class="sm:col-span-2">
-            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mô tả</label>
-            <textarea
-              formControlName="description"
-              id="description"
-              rows="6"
-              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Nhập mô tả công việc..."
-            ></textarea>
-          </div>
+<form class="card" [formGroup]="form">
+  <app-modal-header [title]="work?.id ? 'Chỉnh sửa công việc' : 'Thêm mới công việc'"></app-modal-header>
+  <div class="card-body">
+    <div class="mb-3">
+      <label for="title" class="form-label">Tên công việc</label>
+      <input
+        formControlName="title"
+        type="title"
+        class="form-control"
+        id="title"
+        placeholder="VD: Thiết kế cơ sở dữ liệu"
+      />
+    </div>
+    <div class="mb-3">
+      <div class="row">
+        <div class="col-6">
+          <label for="follower" class="form-label">Người theo dõi</label>
+          <ng-select
+            formControlName="followerId"
+            id="follower"
+            [items]="followers"
+            bindValue="id"
+            bindLabel="fullName"
+            [clearable]="false"
+          ></ng-select>
         </div>
-        <div class="w-full text-end">
-          <button
-            disabled
-            type="submit"
-            class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
-          >
-            Tạo công việc
-          </button>
+        <div class="col-6">
+          <label for="important" class="form-label">Mức độ quan trọng</label>
+          <ng-select
+            id="important"
+            formControlName="importantId"
+            [items]="importants$ | async"
+            bindValue="id"
+            bindLabel="name"
+            [clearable]="false"
+          ></ng-select>
         </div>
-      </form>
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="row">
+        <div class="col-lg-6 col-12">
+          <label for="startDate" class="form-label">Ngày bắt đầu</label>
+          <input
+            formControlName="startDate"
+            id="startDate"
+            placeholder="Chọn ngày bắt đầu"
+            class="form-control"
+            type="text"
+            bsDatepicker
+          />
+        </div>
+        <div class="col-lg-6 col-12">
+          <label for="endDate" class="form-label">Ngày kết thúc</label>
+          <input
+            formControlName="endDate"
+            id="endDate"
+            placeholder="Chọn ngày kết thúc"
+            class="form-control"
+            type="text"
+            bsDatepicker
+          />
+        </div>
+      </div>
     </div>
   </div>
-</div>
+  <app-modal-footer
+    [confirmText]="work?.id ? 'Chỉnh sửa' : 'Tạo mới'"
+    (handleClick)="submit()"
+    [disabled]="form.invalid"
+  ></app-modal-footer>
+</form>
