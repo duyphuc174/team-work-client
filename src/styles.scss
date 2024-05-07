@@ -1,85 +1,20 @@
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
-// Plus imports for other components in your app.
+/* Importing Font Awesome SCSS file. */
+@import './assets/icons/fontawesome-free-6.5.2-web/css/fontawesome.min.css';
+@import './assets/icons/fontawesome-free-6.5.2-web/css/brands.min.css';
+@import './assets/icons/fontawesome-free-6.5.2-web/css/solid.min.css';
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-@include mat.core();
+/* Importing Datepicker SCSS file. */
+@import 'node_modules/ngx-bootstrap/datepicker/bs-datepicker';
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$team-work-client-primary: mat.define-palette(mat.$indigo-palette);
-$team-work-client-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+/* Importing ng-select SCSS file. */
+@import '~@ng-select/ng-select/themes/default.theme.css';
 
-// The warn palette is optional (defaults to red).
-$team-work-client-warn: mat.define-palette(mat.$red-palette);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$team-work-client-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: $team-work-client-primary,
-      accent: $team-work-client-accent,
-      warn: $team-work-client-warn,
-    ),
-  )
-);
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($team-work-client-theme);
-
-// @import 'reset-css';
-// @import 'tailwindcss/base';
-// @import 'tailwindcss/components';
-// @import 'tailwindcss/utilities';
+@import './assets/scss/style.scss';
 
 .d-content {
   display: contents !important;
 }
 
-.mat-mdc-dialog-container .mdc-dialog__surface {
-  background-color: transparent !important;
-}
-
-// /* width */
-// ::-webkit-scrollbar {
-//   width: 5px;
-// }
-
-// /* Track */
-// ::-webkit-scrollbar-track {
-//   background: #999;
-// }
-
-// /* Handle */
-// ::-webkit-scrollbar-thumb {
-//   background: #888;
-//   border-radius: 5px;
-// }
-
-// /* Handle on hover */
-// ::-webkit-scrollbar-thumb:hover {
-//   background: #555;
-// }
-
-.border-danger {
-  border-color: #f05252 !important;
-}
-
-.border-success {
-  border-color: #00d68f !important;
-}
-
-@import '~bootstrap/dist/css/bootstrap.css';
-@import './assets/icons/fontawesome-free-6.5.2-web/css/fontawesome.min.css';
-@import './assets/icons/fontawesome-free-6.5.2-web/css/brands.min.css';
-@import './assets/icons/fontawesome-free-6.5.2-web/css/solid.min.css';
 
 .width- {
   &1 {
@@ -212,27 +147,10 @@ th {
   vertical-align: middle;
 }
 
-/* Importing Bootstrap SCSS file. */
-@import './node_modules/bootstrap/scss/bootstrap';
-
 .cursor-pointer {
   cursor: pointer !important;
 }
 
-/* Importing Bootstrap SCSS file. */
-@import './node_modules/bootstrap/scss/bootstrap';
-
-/* Importing Datepicker SCSS file. */
-@import 'node_modules/ngx-bootstrap/datepicker/bs-datepicker';
-
-@import '~@ng-select/ng-select/themes/default.theme.css';
-
 .ng-dropdown-panel {
   z-index: 9999 !important;
 }
-
-/* Importing Bootstrap SCSS file. */
-@import "./node_modules/bootstrap/scss/bootstrap";
-
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';

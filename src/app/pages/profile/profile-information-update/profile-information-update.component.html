@@ -1,71 +1,42 @@
-<div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
-  <div class="mb-5">
-    <h5 class="text-xl font-bold dark:text-white">Chỉnh sửa thông tin</h5>
-  </div>
-
-  <div class="grid gap-6 mb-6 md:grid-cols-2">
-    <div>
-      <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Họ</label>
-      <input
-        type="text"
-        id="first_name"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="John"
-        required
-      />
-    </div>
-    <div>
-      <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên</label>
-      <input
-        type="text"
-        id="last_name"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Doe"
-        required
-      />
-    </div>
-    <div>
-      <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
-      <input
-        type="text"
-        id="company"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Flowbite"
-        required
-      />
-    </div>
-    <div>
-      <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number</label>
-      <input
-        type="tel"
-        id="phone"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="123-45-678"
-        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-        required
-      />
-    </div>
-    <div>
-      <label for="website" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Website URL</label>
-      <input
-        type="url"
-        id="website"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="flowbite.com"
-        required
-      />
-    </div>
-    <div>
-      <label for="visitors" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >Unique visitors (per month)</label
-      >
-      <input
-        type="number"
-        id="visitors"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder=""
-        required
-      />
-    </div>
+<div class="card">
+  <div class="card-body">
+    <h5 class="mb-4">Chỉnh sửa thông tin</h5>
+    <form action="" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="row">
+        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">Họ</label>
+            <input type="text" formControlName="firstName" class="form-control" id="firstName" placeholder="VD: Nguyễn Duy" />
+          </div>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Tên</label>
+            <input type="text" formControlName="lastName" class="form-control" id="lastName" placeholder="VD: Phúc" />
+          </div>
+        </div>        
+      </div>
+      <div class="row">
+        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Số điện thoại</label>
+            <input type="text" formControlName="phone" class="form-control" id="phoneNumber" placeholder="VD: 0123456789" />
+          </div>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+          <div class="mb-3">
+            <label for="birthday" class="form-label">Sinh nhật</label>
+            <input type="text" formControlName="birthday" class="form-control" bsDatepicker id="birthday" placeholder="VD: 17/07/2002" />
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Địa chỉ</label>
+        <input type="text" formControlName="address" class="form-control" id="address" placeholder="VD: 123 ABC Street" />
+      </div>
+      <div class="text-end">
+        <button class="btn btn-primary px-5" type="submit">Cập nhật</button>
+      </div>
+    </form>
   </div>
 </div>
