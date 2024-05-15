@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/co
 })
 export class HeaderTitleComponent {
   @Input() title: string;
+  @Input() breadcrumbTitles: { name: string; routerLink: string; link?: string }[];
   @Input() buttonName: string;
   @Input() buttonDelete: string;
   @Input() secondBreadcrumb: string;

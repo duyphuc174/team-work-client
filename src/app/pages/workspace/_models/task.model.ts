@@ -6,7 +6,7 @@ export class TaskModel {
   description: string;
   important: TaskImportantEnum;
   deadline: Date;
-  isComplete: boolean;
+  completed: boolean;
   assignee: UserModel;
 
   setData(data) {
@@ -15,7 +15,7 @@ export class TaskModel {
     this.description = data.description || '';
     this.important = data.important || TaskImportantEnum.Low;
     this.deadline = data.deadline ? new Date(data.deadline) : null;
-    this.isComplete = data?.isComplete || false;
+    this.completed = data?.completed || false;
     if (data.assignee) {
       const user = new UserModel();
       user.setData(data.assignee);
@@ -28,4 +28,30 @@ export enum TaskImportantEnum {
   Low = 1,
   Medium = 2,
   High = 3,
+}
+
+export function getTaskImportantName(level: TaskImportantEnum) {
+  switch (level) {
+    case TaskImportantEnum.Low:
+      return 'Không quan trọng';
+    case TaskImportantEnum.Medium:
+      return 'Quan trọng';
+    case TaskImportantEnum.High:
+      return 'Rất quan trọng';
+    default:
+      return 'Không quan trọng';
+  }
+}
+
+export function getTaskImportantColor(level: TaskImportantEnum) {
+  switch (level) {
+    case TaskImportantEnum.Low:
+      return 'secondary';
+    case TaskImportantEnum.Medium:
+      return 'warning';
+    case TaskImportantEnum.High:
+      return 'danger';
+    default:
+      return 'secondary';
+  }
 }

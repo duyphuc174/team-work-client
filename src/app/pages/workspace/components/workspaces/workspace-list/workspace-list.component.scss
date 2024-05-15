@@ -1,0 +1,12 @@
+.workspace-item-link {
+  &:hover {
+    color: var(--mdb-primary) !important;
+    text-decoration: underline;
+  }
+}
+
+.dropdown-toggle {
+  &::after {
+    display: none !important;
+  }
+}

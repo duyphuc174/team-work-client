@@ -9,8 +9,34 @@ import { UserHttpService } from './user-http.service';
 export class UserService {
   constructor(private userHttpService: UserHttpService) {}
 
-  getUsers(params: any): Observable<UserModel[]> {
+  getUsers(params?: any): Observable<UserModel[]> {
     return this.userHttpService.getUsers(params).pipe(
+      map((users) => {
+        return users.map((user) => {
+          const u = new UserModel();
+          u.setData(user);
+          return u;
+        });
+      }),
+      catchError((err) => {
+        return of([]);
+      }),
+    );
+  }
+
+  createUser(data: any): Observable<any> {
+    return this.userHttpService.createUser(data).pipe(
+      map((res) => {
+        const u = new UserModel();
+        u.setData(res);
+        return u;
+      }),
+      catchError((err) => of(undefined)),
+    );
+  }
+
+  searchUsers(params?: any): Observable<UserModel[]> {
+    return this.userHttpService.searchUsers(params).pipe(
       map((users) => {
         return users.map((user) => {
           const u = new UserModel();

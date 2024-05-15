@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from '../modules/auth/_services/auth.guard';
 
 const Routing: Routes = [
   {
@@ -16,6 +17,16 @@ const Routing: Routes = [
   {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then((m) => m.ProfileModule),
+  },
+  {
+    path: 'admin',
+    canActivateChild: [AuthGuard],
+    loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
+  },
+  {
+    path: '',
+    redirectTo: 'workspaces',
+    pathMatch: 'full',
   },
 ];
 

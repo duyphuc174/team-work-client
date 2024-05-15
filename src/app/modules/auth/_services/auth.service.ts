@@ -59,9 +59,22 @@ export class AuthService implements OnDestroy {
 
   logout() {
     localStorage.removeItem(this.authLocalStorageToken);
-    this.router.navigate(['/auth/login'], {
-      queryParams: {},
-    });
+    this.router
+      .navigate(['/auth/login'], {
+        queryParams: {},
+      })
+      .then();
+  }
+
+  changePassword(data: any): Observable<any> {
+    return this.authHttpService.changePassword(data).pipe(
+      map((res: any) => {
+        return res;
+      }),
+      catchError((err) => {
+        return of(undefined);
+      }),
+    );
   }
 
   getUserByToken(): Observable<any> {

@@ -24,6 +24,14 @@ export class WorkspaceHtppService {
     return this.http.get<any>(`${API_WORKSPACE_URL}/${id}`);
   }
 
+  updateWorkspace(id: number, data: any): Observable<any> {
+    return this.http.post<any>(`${API_WORKSPACE_URL}/${id}`, data);
+  }
+
+  deleteWorkspace(id: number): Observable<any> {
+    return this.http.delete<any>(`${API_WORKSPACE_URL}/${id}`);
+  }
+
   getUsers(id: number, params?: any): Observable<any> {
     return this.http.get<any>(`${API_WORKSPACE_URL}/${id}/users`, { params });
   }

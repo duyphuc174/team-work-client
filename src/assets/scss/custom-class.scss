@@ -1,0 +1,21 @@
+.required {
+  &::after {
+    content: '*';
+    color: var(--mdb-danger);
+    font-weight: 600;
+    margin-left: 0.25rem;
+    position: relative;
+  }
+}
+
+@for $line from 1 through 10 {
+  .max-line-#{$line} {
+    display: block;
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-line-clamp: #{$line};
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

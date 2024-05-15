@@ -13,6 +13,14 @@ export class UserHttpService {
   constructor(private http: HttpClient) {}
 
   getUsers(params?: any): Observable<any> {
+    return this.http.get<any>(API_USER_URL, { params });
+  }
+
+  createUser(data: any): Observable<any> {
+    return this.http.post<any>(API_USER_URL, data);
+  }
+
+  searchUsers(params?: any): Observable<any> {
     return this.http.get<any>(`${API_USER_URL}/search`, { params });
   }
 

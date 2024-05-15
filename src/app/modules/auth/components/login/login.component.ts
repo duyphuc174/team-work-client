@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', Validators.compose([Validators.required])],
+      password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(16)])],
     });
   }
 
@@ -34,14 +34,12 @@ export class LoginComponent implements OnInit {
     const user = this.form.value;
     this.authService.login(user.email, user.password).subscribe((res) => {
       if (res) {
-        console.log(res);
-
         this.router.navigate(['/']);
       }
     });
   }
 
-  controls() {
-    return this.form.controls;
+  control(name: string) {
+    return this.form.controls[name];
   }
 }

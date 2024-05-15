@@ -1,0 +1,54 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col" class="pb-3 width-10">#</th>
+      <th scope="col" class="pb-3">Người dùng</th>
+      <th scope="col" class="pb-3">Số điện thoại</th>
+      <th scope="col" class="pb-3">Sinh nhật</th>
+      <th scope="col" class="pb-3">Địa chỉ</th>
+      <th scope="col" class="pb-3">Vai trò</th>
+      <th scope="col" class="pb-3"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let user of users; let i = index">
+      <tr class="">
+        <th class="py-3">
+          {{ i + 1 }}
+        </th>
+        <td class="py-3">
+          <app-user-avatar-infor [user]="user"></app-user-avatar-infor>
+        </td>
+        <td class="py-3">
+          <span>{{ user.phone }}</span>
+        </td>
+        <td class="py-3">
+          <span>{{ user.birthday | date : 'dd/MM/yyyy' }}</span>
+        </td>
+        <td class="py-3">
+          <span>{{ user.address }}</span>
+        </td>
+        <td class="py-3">
+          <span class="badge badge-{{ transformRoleBagdeClass(user.role.name) }}">{{
+            getUserRoleName(user.role.name)
+          }}</span>
+        </td>
+        <td class="py-3 text-center width-10">
+          <div ngbDropdown class="d-inline-block">
+            <div type="button" class="btn btn-sm btn-outline-secondary border-0" id="dropdownBasic1" ngbDropdownToggle>
+              <i class="fa-solid fa-ellipsis fs-5"></i>
+            </div>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button ngbDropdownItem>
+                <div class="bg-hover-info-danger text-hover-info">
+                  <!-- <i class="fa-regular fa-eye me-1"></i> -->
+                  Xem chi tiết
+                </div>
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

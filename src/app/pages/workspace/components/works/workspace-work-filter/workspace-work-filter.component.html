@@ -1,0 +1,28 @@
+<div class="d-flex flex-row">
+  <div class="me-3">
+    <button class="btn btn-secondary" (click)="clearFilter()">Xóa bộ lọc</button>
+  </div>
+  <ng-select
+    style="min-width: 150px"
+    [items]="listSortBy"
+    bindValue="value"
+    bindLabel="label"
+    [clearable]="true"
+    placeholder="Sắp xếp theo"
+    class="me-3"
+    (change)="filterChange()"
+    (clear)="filterChange()"
+    [(ngModel)]="sortBySelected"
+  ></ng-select>
+  <ng-select
+    style="min-width: 150px"
+    [items]="listSortType"
+    bindValue="value"
+    bindLabel="label"
+    [clearable]="true"
+    placeholder="Kiểu sắp xếp"
+    (change)="filterChange()"
+    (clear)="filterChange()"
+    [(ngModel)]="sortTypeSelected"
+  ></ng-select>
+</div>

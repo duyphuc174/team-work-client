@@ -1,45 +1,47 @@
-<div
-  class="d-flex flex-column flex-shrink-0 p-3 bg-white h-100 border-end position-fixed top-0 start-0"
-  style="width: 240px; margin-top: 72.8px"
->
-  <ul class="nav nav-pills flex-column">
-    <li class="nav-item">
-      <a routerLink="/workspaces/list" class="nav-link" routerLinkActive="active" aria-current="workspaces">
-        <i class="fa-solid fa-house"></i>
-        Workspaces
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLinkActive="active" aria-current="task">
-        <i class="fa-solid fa-briefcase"></i>
-        Task
-      </a>
-    </li>
-  </ul>
-  <hr />
-  <ul class="nav nav-pills flex-column mb-auto" *ngIf="workspaceId">
-    <li class="nav-item">
-      <a
-        routerLink="/workspaces/{{ workspaceId }}/works"
-        class="nav-link"
-        routerLinkActive="active"
-        aria-current="work"
-      >
-        <i class="fa-solid fa-list-check"></i>
-        Công việc
-      </a>
-    </li>
-    <li class="nav-item">
-      <a
-        routerLink="/workspaces/{{ workspaceId }}/members"
-        class="nav-link"
-        routerLinkActive="active"
-        aria-current="work"
-      >
-        <i class="fa-solid fa-user-group"></i>
-        Thành viên
-      </a>
-    </li>
-  </ul>
-</div>
-<div style="width: 240px"></div>
+<ng-container *ngIf="workspace">
+  <div
+    class="d-flex flex-column flex-shrink-0 p-2 bg-white h-100 border-end position-fixed top-0 start-0"
+    style="width: 240px; margin-top: 58.6px"
+  >
+    <div class="border-bottom p-2 fs-6 mb-3">
+      <a href="" class="max-line-1">Đồ án tốt nghiệp </a>
+    </div>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a
+          routerLink="/workspaces/{{ workspace.id }}/works"
+          class="nav-link"
+          routerLinkActive="active"
+          aria-current="work"
+        >
+          <i class="fa-solid fa-list-check"></i>
+          Công việc
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          routerLink="/workspaces/{{ workspace.id }}/tasks"
+          class="nav-link"
+          routerLinkActive="active"
+          aria-current="work"
+        >
+          <i class="fa-regular fa-circle-check"></i>
+          Việc cần làm
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a
+          routerLink="/workspaces/{{ workspace.id }}/members"
+          class="nav-link"
+          routerLinkActive="active"
+          aria-current="work"
+        >
+          <i class="fa-solid fa-user-group"></i>
+          Thành viên
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div style="width: 240px"></div>
+</ng-container>

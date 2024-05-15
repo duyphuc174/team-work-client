@@ -1,0 +1,20 @@
+<app-header-title
+  [title]="'Danh sách công việc'"
+  [buttonName]="'Thêm chu kỳ'"
+  (handleClick)="openModalCreateSprint()"
+></app-header-title>
+
+<div class="mx-auto max-w">
+  <!-- Start coding here -->
+  <ng-container *ngIf="sprints$ | async as sprints">
+    <ng-container *ngFor="let sprint of sprints">
+      <div class="mb-5">
+        <app-workspace-sprint
+          [sprint]="sprint"
+          (handleEdit)="openModalCreateSprint($event)"
+          (handleDelete)="openModalConfirmDelete($event)"
+        ></app-workspace-sprint>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

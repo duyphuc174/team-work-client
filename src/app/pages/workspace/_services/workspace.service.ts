@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { WorkspaceHtppService } from './workspace-htpp.service';
 import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
-import { SprintModel, WorkspaceModel } from '../_models/workspace.model';
+import { WorkspaceModel } from '../_models/workspace.model';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { SprintModel } from '../_models/sprint.model';
+import { AuthService } from 'src/app/modules/auth/_services/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -58,6 +60,29 @@ export class WorkspaceService {
       }),
       catchError((err) => {
         console.log(err);
+        return of(undefined);
+      }),
+    );
+  }
+
+  updateWorkspace(id: number, data: any): Observable<any> {
+    return this.workspaceHttpService.updateWorkspace(id, data).pipe(
+      map((res: any) => {
+        return res;
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of(undefined);
+      }),
+    );
+  }
+
+  deleteWorkspace(id: number): Observable<any> {
+    return this.workspaceHttpService.deleteWorkspace(id).pipe(
+      map((res) => {
+        return res;
+      }),
+      catchError((err) => {
         return of(undefined);
       }),
     );

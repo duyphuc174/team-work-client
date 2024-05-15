@@ -1,9 +1,14 @@
 <ng-container *ngIf="user.id">
   <div class="d-flex align-items-center">
-    <img class="rounded-circle width-8 height-8" src="{{ user.avatar }}" alt="" tooltip="{{ user.fullName }}" />
+    <img
+      class="rounded-circle width-{{ size }} height-{{ size }}"
+      src="{{ user.avatar }}"
+      alt=""
+      tooltip="{{ user.fullName }}"
+    />
     <div class="d-flex flex-column ms-2" *ngIf="showName">
       <h6 class="mb-0">{{ user.fullName }}</h6>
-      <span>{{ user.email }}</span>
+      <span *ngIf="showEmail">{{ user.email }}</span>
     </div>
   </div>
 </ng-container>

@@ -11,6 +11,8 @@ export class UserModel extends AuthModel {
   birthday: Date;
   address: string;
   description: string;
+  workspaceRole: string;
+  role: UserRoleModel;
 
   constructor(data: any = {}) {
     super();
@@ -28,6 +30,42 @@ export class UserModel extends AuthModel {
     this.birthday = data.birthday ? new Date(data.birthday) : null;
     this.address = data.address || '';
     this.description = data.description || '';
+    if (data?.role) {
+      this.role = new UserRoleModel();
+      this.role.setData(data.role);
+    }
+  }
+}
+
+export class UserRoleModel {
+  id: number;
+  name: string;
+
+  setData(data: any) {
+    this.id = data.id;
+    this.name = data.name;
+  }
+}
+
+export function getUserRoleName(role: string) {
+  switch (role) {
+    case 'admin':
+      return 'Quản trị viên';
+    case 'member':
+      return 'Thành viên';
+    default:
+      return 'Thành viên';
+  }
+}
+
+export function tranformUserBagdeClass(role: string) {
+  switch (role) {
+    case 'admin':
+      return 'primary';
+    case 'member':
+      return 'secondary';
+    default:
+      return 'secondary';
   }
 }
 

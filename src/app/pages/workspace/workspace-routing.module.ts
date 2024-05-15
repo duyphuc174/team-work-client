@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WorkspaceComponent } from './workspace.component';
-import { WorkspaceListComponent } from './components/workspace-list/workspace-list.component';
 import { WorkspaceMemberListComponent } from './components/workspace-member-list/workspace-member-list.component';
-import { WorkspaceWorkListComponent } from './components/workspace-work-list/workspace-work-list.component';
-import { WorkspaceWorkDetailComponent } from './components/workspace-work-detail/workspace-work-detail.component';
-import { WorkspaceWorkComponent } from './components/workspace-work/workspace-work.component';
+import { WorkspaceWorkListComponent } from './components/works/workspace-work-list/workspace-work-list.component';
+import { WorkspaceWorkDetailComponent } from './components/works/workspace-work-detail/workspace-work-detail.component';
+import { WorkspaceWorkComponent } from './components/works/workspace-work/workspace-work.component';
+import { WorkspaceListComponent } from './components/workspaces/workspace-list/workspace-list.component';
 
 const routes: Routes = [
   {

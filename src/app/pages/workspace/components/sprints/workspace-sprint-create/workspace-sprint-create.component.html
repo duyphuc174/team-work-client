@@ -1,0 +1,45 @@
+<div class="card">
+  <app-modal-header [title]="sprint?.id ? 'Chỉnh sửa chu kỳ' : 'Tạo chu kỳ'"></app-modal-header>
+  <div class="card-body">
+    <form action="" [formGroup]="form">
+      <div class="mb-3">
+        <label for="name" class="form-label">Tên chu kỳ</label>
+        <input formControlName="name" type="text" class="form-control" id="name" placeholder="Nhập tên chu kỳ" />
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="startDate" class="form-label">Ngày bắt đầu</label>
+            <input
+              formControlName="startDate"
+              type="text"
+              bsDatepicker
+              class="form-control"
+              id="startDate"
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="endDate" class="form-label">Ngày kết thúc</label>
+            <input
+              formControlName="endDate"
+              type="text"
+              bsDatepicker
+              class="form-control"
+              id="endDate"
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+            />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <app-modal-footer
+    [confirmText]="sprint?.id ? 'Chỉnh sửa' : 'Tạo ngay'"
+    [isLoading$]="isLoading$"
+    (handleClick)="submit()"
+    [disabled]="form.invalid"
+  ></app-modal-footer>
+</div>

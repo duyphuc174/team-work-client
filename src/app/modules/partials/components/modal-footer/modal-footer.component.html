@@ -1,6 +1,13 @@
 <!-- Modal footer -->
 <div class="card-footer">
   <div class="text-end">
-    <button [disabled]="disabled" class="btn btn-primary" (click)="onClick()">{{ confirmText }}</button>
+    <button [disabled]="disabled" class="btn btn-primary" (click)="onClick()">
+      <div class="d-flex align-items-center">
+        <div class="spinner-border spinner-border-sm me-2" role="status" *ngIf="isLoading$ | async">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        {{ confirmText }}
+      </div>
+    </button>
   </div>
 </div>

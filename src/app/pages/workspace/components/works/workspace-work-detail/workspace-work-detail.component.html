@@ -1,0 +1,77 @@
+<app-header-title [title]="'Chi tiết công việc'" [buttonName]="'Chỉnh sửa'" [buttonDelete]="'Xóa'"></app-header-title>
+<div class="card">
+  <ng-container *ngIf="work$ | async as work">
+    <div class="card-header">
+      <div class="py-2">
+        <div class="d-flex flex-row justify-content-between">
+          <h5 class="mb-0">{{ work.title }}</h5>
+          <span>Chu kỳ: {{ work.sprint?.name }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <div class="d-flex flex-row align-items-start justify-content-between">
+          <div class="d-flex flex-column">
+            <span class="fw-medium mb-1">Người theo dõi:</span>
+            <app-user-avatar-infor [user]="work.follower" [size]="5" [showEmail]="false"></app-user-avatar-infor>
+          </div>
+          <div class="d-flex flex-row">
+            <div class="me-3">
+              <label for="files" class="btn bnt-sm btn-secondary">
+                <i class="fa-solid fa-paperclip me-1"></i>
+                Tệp đính kèm
+              </label>
+              <input id="files" type="file" accept=".png, .jpg, .jpeg" (change)="readURL($event)" multiple hidden />
+            </div>
+            <div class="btn-group" dropdown>
+              <button
+                id="button-basic"
+                dropdownToggle
+                type="button"
+                class="btn btn-sm dropdown-toggle"
+                [ngClass]="{
+                  'btn-success': work.status === workStatus.OPEN,
+                  'btn-secondary': work.status === workStatus.COMPLETE
+                }"
+                aria-controls="dropdown-basic"
+              >
+                {{ getWorkStatusName(work.status) }} <span class="caret"></span>
+              </button>
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <ng-container *ngFor="let status of workStatus | keyvalue">
+                  <li role="menuitem" (click)="updateWorkStatus(status.value)">
+                    <a class="dropdown-item">{{ getWorkStatusName(status.value) }}</a>
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="d-flex flex-row align-items-center justify-content-between mb-3">
+          <div class="d-flex flex-row align-items-center">
+            <div>
+              <span class="fw-medium">Thời gian:</span>
+              <span class="text-muted">
+                {{ work.startDate | date : 'dd/MM/yyyy' }} -
+                {{ work.endDate | date : 'dd/MM/yyyy' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-2">
+          <h6>Mô tả</h6>
+          <p class="text-muted mb-0">{{ work.description || 'Không có mô tả!' }}</p>
+        </div>
+        <div class="d-flex flex-row">
+          <ng-container *ngFor="let file of work.files">
+            <app-image-show [file]="file"></app-image-show>
+          </ng-container>
+        </div>
+      </div>
+      <app-workspace-task-list [workId]="workId"></app-workspace-task-list>
+    </div>
+  </ng-container>
+</div>

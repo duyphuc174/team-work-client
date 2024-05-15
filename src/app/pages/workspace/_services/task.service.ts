@@ -36,4 +36,15 @@ export class TaskService {
       }),
     );
   }
+
+  updateTask(id: number, data: any): Observable<any> {
+    return this.taskHttpService.updateTask(id, data).pipe(
+      map((res) => {
+        return res;
+      }),
+      catchError((err) => {
+        return of(err);
+      }),
+    );
+  }
 }

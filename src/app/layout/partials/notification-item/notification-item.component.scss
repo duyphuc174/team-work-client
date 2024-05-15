@@ -1,0 +1,6 @@
+.notification-link {
+  &:hover {
+    cursor: pointer;
+    background-color: var(--mdb-gray-200) !important;
+  }
+}

@@ -1,4 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
+import { WorkspaceModel } from 'src/app/pages/workspace/_models/workspace.model';
 import { WorkspaceService } from 'src/app/pages/workspace/_services/workspace.service';
 
 @Component({
@@ -8,11 +9,11 @@ import { WorkspaceService } from 'src/app/pages/workspace/_services/workspace.se
 })
 export class AsideComponent {
   @HostBinding('class') class = 'position-relative';
-  workspaceId: number;
+  workspace: WorkspaceModel;
   constructor(private workspaceService: WorkspaceService) {
-    this.workspaceService.currentWorkspace$.subscribe((workspace) => {
-      if (workspace) {
-        this.workspaceId = workspace.id;
+    this.workspaceService.currentWorkspace$.subscribe((w) => {
+      if (w) {
+        this.workspace = w;
       }
     });
   }

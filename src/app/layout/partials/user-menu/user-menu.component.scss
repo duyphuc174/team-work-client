@@ -1,0 +1,21 @@
+.dropdown-toggle {
+  &::after {
+    display: none !important;
+  }
+}
+
+.user-menu-item {
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(226, 226, 249);
+    color: var(--mdb-primary);
+  }
+
+  &-danger {
+    &:hover {
+      cursor: pointer;
+      background-color: rgb(249, 226, 226);
+      color: var(--mdb-danger);
+    }
+  }
+}

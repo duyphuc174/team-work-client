@@ -8,6 +8,8 @@ import { UserAvatarInforComponent } from './components/user-avatar-infor/user-av
 import { SelectUserComponent } from './components/select-user/select-user.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalConfirmDeleteComponent } from './components/modal-confirm-delete/modal-confirm-delete.component';
+import { ErrorMessageComponent } from './components/error-message/error-message.component';
+import { ImageShowComponent } from './components/image-show/image-show.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { ModalConfirmDeleteComponent } from './components/modal-confirm-delete/m
     UserAvatarInforComponent,
     SelectUserComponent,
     ModalConfirmDeleteComponent,
+    ErrorMessageComponent,
+    ImageShowComponent,
   ],
   imports: [CommonModule, RouterModule, TooltipModule],
   exports: [
@@ -25,6 +29,8 @@ import { ModalConfirmDeleteComponent } from './components/modal-confirm-delete/m
     ModalFooterComponent,
     UserAvatarInforComponent,
     SelectUserComponent,
+    ErrorMessageComponent,
+    ImageShowComponent,
   ],
 })
 export class PartialsModule {}

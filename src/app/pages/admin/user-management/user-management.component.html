@@ -1,0 +1,12 @@
+<app-header-title
+  [buttonName]="'Thêm người dùng'"
+  [breadcrumbTitles]="[{ name: 'Quản lý người dùng', routerLink: '/admin/users' }]"
+  (handleClick)="openModalCreateUser()"
+></app-header-title>
+<div class="card">
+  <div class="card-body">
+    <ng-container *ngIf="users$ | async as users">
+      <app-user-management-list [users]="users"></app-user-management-list>
+    </ng-container>
+  </div>
+</div>

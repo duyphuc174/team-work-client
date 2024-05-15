@@ -9,12 +9,14 @@
 /* Importing ng-select SCSS file. */
 @import '~@ng-select/ng-select/themes/default.theme.css';
 
-@import './assets/scss/style.scss';
+// @import './assets/scss/style.scss';
+@import '~mdb-ui-kit/css/mdb.min.css';
+
+@import './assets/scss/custom-class.scss';
 
 .d-content {
   display: contents !important;
 }
-
 
 .width- {
   &1 {
@@ -153,4 +155,12 @@ th {
 
 .ng-dropdown-panel {
   z-index: 9999 !important;
+}
+
+.table-item-info {
+  cursor: pointer;
+  &:hover {
+    color: var(--mdb-primary) !important;
+    text-decoration: underline;
+  }
 }

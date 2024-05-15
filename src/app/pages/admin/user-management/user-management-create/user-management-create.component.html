@@ -1,0 +1,95 @@
+<div class="card">
+  <app-modal-header [title]="'Tạo người dùng'"></app-modal-header>
+  <div class="card-body">
+    <form [formGroup]="form">
+      <div class="form-group mb-3">
+        <label class="form-label required" for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control form-control-lg"
+          formControlName="email"
+          placeholder="VD: 6ZCfZ@example.com"
+        />
+        <app-error-message
+          [control]="control('email')"
+          [validation]="'required'"
+          [message]="'Bạn chưa nhập email!'"
+        ></app-error-message>
+        <app-error-message
+          [control]="control('email')"
+          [validation]="'email'"
+          [message]="'Email không đúng định dạng!'"
+        ></app-error-message>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="form-group mb-3">
+            <label class="form-label required" for="firstName">Họ</label>
+            <input
+              type="text"
+              id="firstName"
+              class="form-control form-control-lg"
+              formControlName="firstName"
+              placeholder="VD: Nguyễn Văn"
+            />
+            <app-error-message
+              [control]="control('firstName')"
+              [validation]="'required'"
+              [message]="'Bạn chưa nhập họ!'"
+            ></app-error-message>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group mb-3">
+            <label class="form-label required" for="lastName">Tên</label>
+            <input
+              type="text"
+              id="lastName"
+              class="form-control form-control-lg"
+              formControlName="lastName"
+              placeholder="VD: An"
+            />
+            <app-error-message
+              [control]="control('lastName')"
+              [validation]="'required'"
+              [message]="'Bạn chưa nhập tên!'"
+            ></app-error-message>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label required" for="passwork">Mật khẩu</label>
+        <input
+          type="password"
+          id="passwork"
+          class="form-control form-control-lg"
+          formControlName="password"
+          placeholder="******"
+        />
+        <app-error-message
+          [control]="control('password')"
+          [validation]="'required'"
+          [message]="'Bạn chưa nhập mật khẩu!'"
+        ></app-error-message>
+        <app-error-message
+          [control]="control('password')"
+          [validation]="'minlength'"
+          [message]="'Mật khẩu tối thiểu 6 ký tự!'"
+        ></app-error-message>
+        <app-error-message
+          [control]="control('password')"
+          [validation]="'maxlength'"
+          [message]="'Mật này tối đa 16 ký tự!'"
+        ></app-error-message>
+      </div>
+    </form>
+  </div>
+  <app-modal-footer
+    [confirmText]="'Tạo người dùng'"
+    [disabled]="form.invalid"
+    (handleClick)="createUser()"
+  ></app-modal-footer>
+</div>

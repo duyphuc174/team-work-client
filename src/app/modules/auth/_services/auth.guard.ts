@@ -19,4 +19,13 @@ export class AuthGuard implements CanActivate {
     this.authService.logout();
     return false;
   }
+
+  canActivateChild() {
+    const currentUser = this.authService.currentUserValue;
+    if (currentUser.role.name === 'admin') {
+      return true;
+    }
+    this.authService.logout();
+    return false;
+  }
 }

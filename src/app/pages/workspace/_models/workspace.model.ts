@@ -28,7 +28,7 @@ export class WorkspaceModel {
 
 export class MemberModel {
   id: number;
-  role: string;
+  role: MemberRoleEnum;
   user: UserModel;
   roleName: string;
   setData(data: any) {
@@ -39,20 +39,6 @@ export class MemberModel {
       this.user.setData(data.user);
     }
     this.roleName = getMemberRoleName(this.role);
-  }
-}
-
-export class SprintModel {
-  id: number;
-  name: string;
-  startDate: Date;
-  endDate: Date;
-
-  setData(data) {
-    this.id = data.id;
-    this.name = data.name;
-    this.startDate = new Date(data.startDate);
-    this.endDate = new Date(data.endDate);
   }
 }
 
@@ -70,6 +56,12 @@ export class ImportantModel {
   }
 }
 
+export enum MemberRoleEnum {
+  CREATOR = 'creator',
+  ADMIN = 'admin',
+  MEMBER = 'member',
+}
+
 function getImportantName(level: number) {
   switch (level) {
     case 1:
@@ -81,18 +73,18 @@ function getImportantName(level: number) {
   }
 }
 
-export function getMemberRoleName(role: string) {
+export function getMemberRoleName(role: MemberRoleEnum) {
   switch (role) {
-    case 'creator':
+    case MemberRoleEnum.CREATOR:
       return 'Người tạo nhóm';
-    case 'admin':
+    case MemberRoleEnum.ADMIN:
       return 'Quản trị viên';
     default:
       return 'Thành viên';
   }
 }
 
-export function tranformRoleBagdeClass(role: string) {
+export function tranformRoleBagdeClass(role: MemberRoleEnum) {
   switch (role) {
     case 'creator':
       return 'bg-primary';

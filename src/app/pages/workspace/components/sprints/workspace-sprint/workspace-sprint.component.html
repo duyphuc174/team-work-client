@@ -1,0 +1,135 @@
+<div class="card">
+  <div class="card-header py-3">
+    <div class="d-flex flex-row justify-content-between align-items-center">
+      <h5 class="mb-0">Chu kỳ: {{ sprint.name }}</h5>
+      <div class="d-flex align-items-center">
+        <span>{{ sprint.startDate | date : 'dd/MM/yy' }} - {{ sprint.endDate | date : 'dd/MM/yy' }}</span>
+        <div ngbDropdown class="d-inline-block ms-3">
+          <div type="button" class="btn btn-sm btn-secondary border-0" id="dropdownBasic1" ngbDropdownToggle>
+            <i class="fa-solid fa-ellipsis fs-5"></i>
+          </div>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button ngbDropdownItem (click)="openEditSprintModal()">
+              <div class="bg-hover-info-danger text-hover-info">
+                <i class="fa-regular fa-pen-to-square me-1"></i>Chỉnh sửa
+              </div>
+            </button>
+            <button ngbDropdownItem (click)="openDeleteSprintModal()">
+              <div class="bg-hover-info-danger text-hover-info"><i class="fa-regular fa-trash me-1"></i>Xóa chu kỳ</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="mb-3">
+      <div class="d-flex flex-row justify-content-between">
+        <div>
+          <input (input)="searchChange($event)" type="text" class="form-control" placeholder="Tìm kiếm" />
+        </div>
+        <div class="d-flex flex-row align-items-center">
+          <app-workspace-work-filter class="me-3" (onFilterChange)="filterChange($event)"></app-workspace-work-filter>
+          <button (click)="openWorkCreateModal()" class="btn btn-primary">Thêm công việc</button>
+        </div>
+      </div>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col" class="pb-3 width-6">#</th>
+          <th scope="col" class="pb-3 ps-0">Tên công việc</th>
+          <th scope="col" class="pb-3">Người theo dõi</th>
+          <th scope="col" class="pb-3">Thực hiện</th>
+          <th scope="col" class="pb-3">Độ quan trọng</th>
+          <th scope="col" class="pb-3">Trạng thái</th>
+          <th scope="col" class="pb-3 width-8"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="works$ | async as works">
+          <ng-container *ngFor="let work of works; index as i">
+            <tr class="">
+              <th class="">
+                <span>{{ i + 1 }}</span>
+              </th>
+              <td class="py-3 ps-0">
+                <span class="work-hight-light max-line-1" (click)="goToWorkDetail(work)">{{ work.title }}</span>
+              </td>
+              <td>
+                <app-user-avatar-infor [user]="work.follower"></app-user-avatar-infor>
+              </td>
+              <td>
+                <span class=""
+                  >{{ work.startDate | date : 'dd/MM/yy' || 'dd/mm/yy' }} -
+                  {{ work.endDate | date : 'dd/MM/yy' || 'dd/mm/yy' }}</span
+                >
+              </td>
+              <td class="py-3">
+                <span class="badge p-2 badge-{{ getImportantColor(work.important.level) }}">
+                  {{ work.important.name }}</span
+                >
+              </td>
+              <td class="py-3">
+                <span class="p-2 badge badge-{{ getWorkStatusColor(work.status) }}">{{
+                  getWorkStatusName(work.status)
+                }}</span>
+              </td>
+              <td class="py-3 text-center">
+                <div ngbDropdown class="d-inline-block">
+                  <div
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary border-0"
+                    id="dropdownBasic1"
+                    ngbDropdownToggle
+                  >
+                    <i class="fa-solid fa-ellipsis fs-5"></i>
+                  </div>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <!-- Xem chi tiết  -->
+                    <button ngbDropdownItem (click)="goToWorkDetail(work)">
+                      <div class="bg-hover-info-danger text-hover-info">
+                        <i class="fa-regular fa-eye me-1"></i>Xem chi tiết
+                      </div>
+                    </button>
+                    <!-- Sửa thông tin -->
+                    <button
+                      ngbDropdownItem
+                      (click)="openWorkCreateModal(work)"
+                      *ngIf="userLogged.id === work.follower.id || isAdmin"
+                    >
+                      <div class="bg-hover-light-warning text-hover-warning">
+                        <i class="fa-solid fa-pen-to-square me-1"></i>Sửa thông tin
+                      </div>
+                    </button>
+                    <!-- Xóa work -->
+                    <button
+                      ngbDropdownItem
+                      (click)="openConfirmDeleteModal(work)"
+                      *ngIf="userLogged.id === work.follower.id || isAdmin"
+                    >
+                      <div class="bg-hover-light-danger text-hover-danger">
+                        <i class="fa-solid fa-trash me-1"></i>Xóa workspace
+                      </div>
+                    </button>
+                    <!-- Cập nhật status -->
+                    <button
+                      ngbDropdownItem
+                      (click)="updateStatusWork(work)"
+                      *ngIf="userLogged.id === work.follower.id || isAdmin"
+                    >
+                      <div class="bg-hover-light-danger text-hover-danger">
+                        <i class="fa-solid fa-bars-progress me-1"></i>
+                        {{ work.status === workStatusEnum.COMPLETE ? 'Mở công việc' : 'Hoàn thành ' }}
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

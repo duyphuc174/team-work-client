@@ -6,11 +6,22 @@
 
 <div class="card">
   <div class="card-body">
+    <div class="d-flex flex-row justify-content-between align-items-center mb-3">
+      <div>
+        <button class="btn btn-secondary" (click)="openSelectUsers()">
+          {{ isSelectUsers ? 'Bỏ chọn' : 'Chọn thành viên' }}
+        </button>
+      </div>
+      <div>
+        <!-- <button class="btn btn-primary" (click)="openAddMemberModal()">Thêm thành viên</button> -->
+      </div>
+    </div>
     <table class="table">
       <thead>
         <tr>
           <th scope="col" class="pb-3 width-10">#</th>
           <th scope="col" class="pb-3">Thành viên</th>
+          <th scope="col" class="pb-3">Số điện thoại</th>
           <th scope="col" class="pb-3">Vai trò</th>
           <th scope="col" class="pb-3"></th>
         </tr>
@@ -21,18 +32,82 @@
             <tr class="">
               <th class="py-3">
                 <div class="d-flex align-items-center">
-                  <span>{{ i + 1 }}</span>
+                  <span *ngIf="!isSelectUsers; else selectTpl">{{ i + 1 }}</span>
+                  <ng-template #selectTpl>
+                    <input class="form-check-input" type="checkbox" value="" />
+                  </ng-template>
                 </div>
               </th>
               <td class="py-3">
                 <app-user-avatar-infor [user]="member.user"></app-user-avatar-infor>
               </td>
               <td class="py-3">
+                <span>{{ member.user.phone }}</span>
+              </td>
+              <td class="py-3">
                 <span class="badge {{ transformRoleBagde(member.role) }}">
                   {{ getMemberRoleName(member.role) }}
                 </span>
               </td>
-              <td class="py-3 text-center"><i class="fa-solid fa-ellipsis"></i></td>
+              <td class="py-3 text-center width-10">
+                <div ngbDropdown class="d-inline-block">
+                  <div
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary border-0"
+                    id="dropdownBasic1"
+                    ngbDropdownToggle
+                  >
+                    <i class="fa-solid fa-ellipsis fs-5"></i>
+                  </div>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button ngbDropdownItem>
+                      <div class="bg-hover-info-danger text-hover-info">
+                        <!-- <i class="fa-regular fa-eye me-1"></i> -->
+                        Xem chi tiết
+                      </div>
+                    </button>
+                    <ng-container
+                      *ngIf="
+                        (currentUserRole === memberRole.CREATOR || currentUserRole === memberRole.ADMIN) &&
+                        userLogged.id !== member.user.id
+                      "
+                    >
+                      <button
+                        ngbDropdownItem
+                        *ngIf="member.role === memberRole.MEMBER"
+                        (click)="grantRole(member.id, memberRole.ADMIN)"
+                      >
+                        <div class="bg-hover-light-warning text-hover-warning">
+                          <!-- <i class="fa-solid fa-pen-to-square me-1"></i> -->
+                          Cấp quyền quản trị viên
+                        </div>
+                      </button>
+                      <button
+                        ngbDropdownItem
+                        *ngIf="member.role === memberRole.ADMIN"
+                        (click)="grantRole(member.id, memberRole.MEMBER)"
+                      >
+                        <div class="bg-hover-light-danger text-hover-danger">
+                          <!-- <i class="fa-solid fa-trash me-1"></i> -->
+                          Gỡ quyền quản trị viên
+                        </div>
+                      </button>
+                      <button
+                        ngbDropdownItem
+                        *ngIf="
+                          (currentUserRole === memberRole.ADMIN || currentUserRole === memberRole.CREATOR) &&
+                          member.role !== memberRole.CREATOR
+                        "
+                      >
+                        <div class="bg-hover-light-info text-hover-info" (click)="deleteMembers([member])">
+                          <!-- <i class="fa-solid fa-pen-to-square me-1"></i> -->
+                          Xóa thành viên
+                        </div>
+                      </button>
+                    </ng-container>
+                  </div>
+                </div>
+              </td>
             </tr>
           </ng-container>
         </ng-container>

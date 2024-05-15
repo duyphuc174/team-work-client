@@ -21,6 +21,10 @@ export class AuthHttpService {
     return this.http.post(`${API_AUTH_URL}/register`, userRegister);
   }
 
+  changePassword(data: any): Observable<any> {
+    return this.http.post(`${API_AUTH_URL}/change-password`, data);
+  }
+
   getUserByToken(token: string): Observable<any> {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,

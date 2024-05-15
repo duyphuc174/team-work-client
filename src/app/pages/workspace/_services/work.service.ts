@@ -9,8 +9,8 @@ import { WorkModel } from '../_models/work.model';
 export class WorkService {
   constructor(private workHttpService: WorkHttpService) {}
 
-  getWorks(sprintId: number): Observable<WorkModel[]> {
-    return this.workHttpService.getWorks(sprintId).pipe(
+  getWorks(sprintId: number, params?: any): Observable<WorkModel[]> {
+    return this.workHttpService.getWorks(sprintId, params).pipe(
       map((res: any) => {
         return res.map((work: any) => {
           const w = new WorkModel();
@@ -65,6 +65,18 @@ export class WorkService {
 
   deleteWork(id: number): Observable<any> {
     return this.workHttpService.deleteWork(id).pipe(
+      map((res: any) => {
+        return res;
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of(undefined);
+      }),
+    );
+  }
+
+  addFilesToWork(id: number, data: any): Observable<any> {
+    return this.workHttpService.addFilesToWork(id, data).pipe(
       map((res: any) => {
         return res;
       }),

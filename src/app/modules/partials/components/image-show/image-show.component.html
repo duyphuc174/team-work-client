@@ -1,0 +1,12 @@
+<ng-container *ngIf="file">
+  <div class="me-3 mb-3" [style]="{ width: size.width + 'px', height: size.height + 'px' }" (click)="showImage()">
+    <img class="w-100 h-100 rounded" style="background-size: contain" [src]="file.link" alt="{{ file.name }}" />
+    <p class="mb-0 max-line-1" tooltip="{{ file.name }}">{{ file.name }}</p>
+  </div>
+</ng-container>
+
+<ng-template #detailImage>
+  <div class="w-100">
+    <img class="w-100 h-100 rounded" style="background-size: contain" [src]="file.link" alt="{{ file.name }}" />
+  </div>
+</ng-template>
