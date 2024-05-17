@@ -24,6 +24,19 @@ export class TaskService {
     );
   }
 
+  getTaskById(id: number): Observable<TaskModel> {
+    return this.taskHttpService.getTaskById(id).pipe(
+      map((res) => {
+        const t = new TaskModel();
+        t.setData(res);
+        return t;
+      }),
+      catchError((err) => {
+        return of(err);
+      }),
+    );
+  }
+
   createTask(data: any): Observable<TaskModel> {
     return this.taskHttpService.createTask(data).pipe(
       map((res) => {
@@ -44,6 +57,18 @@ export class TaskService {
       }),
       catchError((err) => {
         return of(err);
+      }),
+    );
+  }
+
+  addFilesToTask(id: number, data: any): Observable<any> {
+    return this.taskHttpService.addFilesToTask(id, data).pipe(
+      map((res) => {
+        return res;
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of(undefined);
       }),
     );
   }

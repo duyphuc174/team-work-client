@@ -10,6 +10,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalConfirmDeleteComponent } from './components/modal-confirm-delete/modal-confirm-delete.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ImageShowComponent } from './components/image-show/image-show.component';
+import { BoldTextPipe } from './_pipes/bold-text.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ImageShowComponent } from './components/image-show/image-show.component
     ModalConfirmDeleteComponent,
     ErrorMessageComponent,
     ImageShowComponent,
+    BoldTextPipe,
   ],
   imports: [CommonModule, RouterModule, TooltipModule],
   exports: [
@@ -31,6 +33,7 @@ import { ImageShowComponent } from './components/image-show/image-show.component
     SelectUserComponent,
     ErrorMessageComponent,
     ImageShowComponent,
+    BoldTextPipe,
   ],
 })
 export class PartialsModule {}

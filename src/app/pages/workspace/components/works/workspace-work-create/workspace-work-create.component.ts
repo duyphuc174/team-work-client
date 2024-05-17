@@ -80,7 +80,11 @@ export class WorkspaceWorkCreateComponent implements OnInit {
   }
 
   loadImportants() {
-    this.importants$ = this.commonService.importants$;
+    this.commonService.getImportants().subscribe((importants) => {
+      if (importants) {
+        this.importants$ = new BehaviorSubject(importants);
+      }
+    });
   }
 
   initForm() {

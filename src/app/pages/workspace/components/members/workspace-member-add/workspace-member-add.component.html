@@ -3,7 +3,7 @@
   <div class="card-body">
     <div class="d-flex flex-row mb-3" *ngIf="usersSelected.length">
       <ng-container *ngFor="let user of usersSelected; let i = index">
-        <div class="position-relative">
+        <div class="position-relative me-3">
           <app-user-avatar-infor [user]="user" [showName]="false"></app-user-avatar-infor>
           <div class="position-absolute top-0 start-100 translate-middle">
             <button class="btn btn-danger btn-sm px-1 py-0" (click)="removeUserSelected(user, i)">

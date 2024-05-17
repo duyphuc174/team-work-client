@@ -47,4 +47,12 @@ export class WorkspaceHtppService {
   getSprints(id: number, params?: any): Observable<any> {
     return this.http.get<any>(`${API_WORKSPACE_URL}/${id}/sprints`, { params });
   }
+
+  getTasks(id: number, params?: any): Observable<any> {
+    return this.http.get<any>(`${API_WORKSPACE_URL}/${id}/tasks`, { params });
+  }
+
+  getNotifications(id: number, params?: any): Observable<any> {
+    return this.http.get<any>(`${API_WORKSPACE_URL}/${id}/notifications`, { params });
+  }
 }

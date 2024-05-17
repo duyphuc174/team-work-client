@@ -1,4 +1,5 @@
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { WorkspaceModel } from '../../workspace/_models/workspace.model';
 
 export class NotificationModel {
   id: number;
@@ -7,6 +8,8 @@ export class NotificationModel {
   link: string;
   read: boolean;
   receiver: UserModel;
+  sender?: UserModel;
+  workspace?: WorkspaceModel;
   createdAt: Date;
 
   setData(data: any) {
@@ -19,6 +22,16 @@ export class NotificationModel {
       const user = new UserModel();
       user.setData(data.receiver);
       this.receiver = user;
+    }
+    if (data?.sender?.id) {
+      const user = new UserModel();
+      user.setData(data.sender);
+      this.sender = user;
+    }
+    if (data?.workspace?.id) {
+      const workspace = new WorkspaceModel();
+      workspace.setData(data.workspace);
+      this.workspace = workspace;
     }
     this.createdAt = new Date(data.createdAt);
   }

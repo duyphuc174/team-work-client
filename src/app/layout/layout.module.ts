@@ -12,9 +12,8 @@ import { UserMenuComponent } from './partials/user-menu/user-menu.component';
 import { AppsDropdownComponent } from './partials/apps-dropdown/apps-dropdown.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { PartialsModule } from '../modules/partials/partials.module';
-import { AuthModule } from '../modules/auth/auth.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { NotificationItemComponent } from './partials/notification-item/notification-item.component';
+import { NotificationModule } from '../pages/notification/notification.module';
 
 @NgModule({
   declarations: [
@@ -26,8 +25,7 @@ import { NotificationItemComponent } from './partials/notification-item/notifica
     NotificationDropdownComponent,
     UserMenuComponent,
     AppsDropdownComponent,
-    NotificationItemComponent,
   ],
-  imports: [CommonModule, LayoutRoutingModule, NgbDropdownModule, PartialsModule, AuthModule, TooltipModule],
+  imports: [CommonModule, LayoutRoutingModule, NgbDropdownModule, PartialsModule, TooltipModule, NotificationModule],
 })
 export class LayoutModule {}

@@ -22,10 +22,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData();
+    // this.loadData();
   }
 
-  loadData() {
-    this.commonService.getImportants().subscribe((res) => {});
-  }
+  loadData() {}
 }

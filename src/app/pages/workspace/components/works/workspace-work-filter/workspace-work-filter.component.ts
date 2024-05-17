@@ -14,7 +14,7 @@ export class WorkspaceWorkFilterComponent {
       label: 'Tên công việc',
     },
     {
-      value: 'important',
+      value: 'importantId',
       label: 'Độ quan trọng',
     },
     {

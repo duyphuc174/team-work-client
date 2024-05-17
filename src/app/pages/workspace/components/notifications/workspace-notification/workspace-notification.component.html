@@ -1,0 +1,19 @@
+<app-header-title
+  [breadcrumbTitles]="[{ name: 'Thông báo nhóm: ' + workspaceName, routerLink: '' }]"
+></app-header-title>
+<div class="row">
+  <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12">
+    <app-notification-list
+      [title]="'Thông báo chưa đọc'"
+      [notifications]="unReadNotifications$ | async"
+      [isWorkspaceNotification]="true"
+    ></app-notification-list>
+  </div>
+  <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12">
+    <app-notification-list
+      [title]="'Thông báo đã đọc'"
+      [notifications]="readNotifications$ | async"
+      [isWorkspaceNotification]="true"
+    ></app-notification-list>
+  </div>
+</div>

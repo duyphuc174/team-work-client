@@ -16,21 +16,21 @@ export class WorkModel {
   setData(data) {
     this.id = data.id;
     this.title = data.title;
-    this.description = data.description;
+    this.description = data?.description || '';
     this.startDate = data.startDate ? new Date(data.startDate) : null;
     this.endDate = data.endDate ? new Date(data.endDate) : null;
-    this.status = data.status;
-    if (data.follower.id) {
+    this.status = data?.status || null;
+    if (data?.follower.id) {
       const user = new UserModel();
       user.setData(data.follower);
       this.follower = user;
     }
-    if (data.important) {
+    if (data?.important) {
       const i = new ImportantModel();
       i.setData(data.important);
       this.important = i;
     }
-    if (data.sprint) {
+    if (data?.sprint) {
       const s = new SprintModel();
       s.setData(data.sprint);
       this.sprint = s;

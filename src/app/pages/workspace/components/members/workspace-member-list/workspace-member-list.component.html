@@ -1,6 +1,6 @@
 <app-header-title
-  [title]="'Danh sách thành viên'"
   [buttonName]="'Thêm thành viên'"
+  [breadcrumbTitles]="[{ name: 'Danh sách thành viên', routerLink: '' }]"
   (handleClick)="openAddMemberModal()"
 ></app-header-title>
 
@@ -8,12 +8,19 @@
   <div class="card-body">
     <div class="d-flex flex-row justify-content-between align-items-center mb-3">
       <div>
+        <input type="text" class="form-control" placeholder="Tìm kiếm" (input)="loadMembers($event)" />
+      </div>
+      <div *ngIf="currentUserRole === memberRole.ADMIN || currentUserRole === memberRole.CREATOR">
+        <button
+          class="btn btn-light btn-danger me-3"
+          *ngIf="selectedMemberIds.length"
+          (click)="deleteMuiltipleMembers()"
+        >
+          Xóa đã chọn
+        </button>
         <button class="btn btn-secondary" (click)="openSelectUsers()">
           {{ isSelectUsers ? 'Bỏ chọn' : 'Chọn thành viên' }}
         </button>
-      </div>
-      <div>
-        <!-- <button class="btn btn-primary" (click)="openAddMemberModal()">Thêm thành viên</button> -->
       </div>
     </div>
     <table class="table">
@@ -34,7 +41,13 @@
                 <div class="d-flex align-items-center">
                   <span *ngIf="!isSelectUsers; else selectTpl">{{ i + 1 }}</span>
                   <ng-template #selectTpl>
-                    <input class="form-check-input" type="checkbox" value="" />
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      (click)="selectUser(member.id)"
+                      [disabled]="member.role === memberRole.CREATOR || member.user.id === userLogged.id"
+                    />
                   </ng-template>
                 </div>
               </th>
@@ -62,7 +75,7 @@
                   <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                     <button ngbDropdownItem>
                       <div class="bg-hover-info-danger text-hover-info">
-                        <!-- <i class="fa-regular fa-eye me-1"></i> -->
+                        <i class="fa-regular fa-eye me-1"></i>
                         Xem chi tiết
                       </div>
                     </button>
@@ -78,7 +91,7 @@
                         (click)="grantRole(member.id, memberRole.ADMIN)"
                       >
                         <div class="bg-hover-light-warning text-hover-warning">
-                          <!-- <i class="fa-solid fa-pen-to-square me-1"></i> -->
+                          <i class="fa-solid fa-user-tie me-1"></i>
                           Cấp quyền quản trị viên
                         </div>
                       </button>
@@ -88,7 +101,7 @@
                         (click)="grantRole(member.id, memberRole.MEMBER)"
                       >
                         <div class="bg-hover-light-danger text-hover-danger">
-                          <!-- <i class="fa-solid fa-trash me-1"></i> -->
+                          <i class="fa-solid fa-user-tie me-1"></i>
                           Gỡ quyền quản trị viên
                         </div>
                       </button>
@@ -99,8 +112,8 @@
                           member.role !== memberRole.CREATOR
                         "
                       >
-                        <div class="bg-hover-light-info text-hover-info" (click)="deleteMembers([member])">
-                          <!-- <i class="fa-solid fa-pen-to-square me-1"></i> -->
+                        <div class="bg-hover-light-info text-hover-info" (click)="deleteMembers([member.id])">
+                          <i class="fa-solid fa-trash me-1"></i>
                           Xóa thành viên
                         </div>
                       </button>

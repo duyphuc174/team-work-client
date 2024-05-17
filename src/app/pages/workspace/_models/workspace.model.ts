@@ -10,8 +10,8 @@ export class WorkspaceModel {
   setData(data) {
     this.id = data.id;
     this.name = data.name;
-    this.description = data.description;
-    if (data.creator) {
+    this.description = data?.description || '';
+    if (data?.creator) {
       this.creator = new UserModel();
       this.creator.setData(data.creator);
     }

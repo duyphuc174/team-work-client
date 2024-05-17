@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotificationComponent } from './notification.component';
 import { NotificationListComponent } from './components/notification-list/notification-list.component';
+import { NotificationAllComponent } from './components/notification-all/notification-all.component';
 
 const routes: Routes = [
   {
@@ -10,12 +11,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'list',
+        redirectTo: 'all',
         pathMatch: 'full',
       },
       {
         path: 'all',
-        component: NotificationListComponent,
+        component: NotificationAllComponent,
       },
     ],
   },

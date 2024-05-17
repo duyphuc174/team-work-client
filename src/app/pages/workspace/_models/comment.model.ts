@@ -18,7 +18,7 @@ export class CommentModel {
   }
 }
 
-export function tranformDateComment(date: Date): string {
+export function tranformTime(date: Date): string {
   const now: Date = new Date();
   const diff: number = now.getTime() - date.getTime();
 

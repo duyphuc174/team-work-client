@@ -5,6 +5,8 @@ import { WorkspaceModel } from '../_models/workspace.model';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { SprintModel } from '../_models/sprint.model';
 import { AuthService } from 'src/app/modules/auth/_services/auth.service';
+import { TaskModel } from '../_models/task.model';
+import { NotificationModel } from '../../notification/_models/notification.model';
 
 @Injectable({
   providedIn: 'root',
@@ -144,6 +146,39 @@ export class WorkspaceService {
       }),
       catchError((err) => {
         return of([]);
+      }),
+    );
+  }
+
+  getTasks(params?: any): Observable<any> {
+    const workspaceId = this.currentWorksapceSubject.value.id;
+    return this.workspaceHttpService.getTasks(workspaceId, params).pipe(
+      map((res) => {
+        return res.map((task) => {
+          const t = new TaskModel();
+          t.setData(task);
+          return { task: t, work: task.work };
+        });
+      }),
+      catchError((err) => {
+        return of([]);
+      }),
+    );
+  }
+
+  getNotifications(params?: any): Observable<any> {
+    const workspaceId = this.currentWorksapceSubject.value.id;
+    return this.workspaceHttpService.getNotifications(workspaceId, params).pipe(
+      map((res) => {
+        const notifications = res.notifications.map((notification) => {
+          const noti = new NotificationModel();
+          noti.setData(notification);
+          return noti;
+        });
+        return { notifications, readCount: res.notiReadCount, unReadCount: res.notiUnreadCount };
+      }),
+      catchError((err) => {
+        return of(undefined);
       }),
     );
   }

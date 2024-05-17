@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { AuthService } from 'src/app/modules/auth/_services/auth.service';
 import { WorkspaceService } from '../../../_services/workspace.service';
 import { MemberService } from '../../../_services/member.service';
 import { TaskService } from '../../../_services/task.service';
 import { TaskImportantEnum, TaskModel, getTaskImportantName } from '../../../_models/task.model';
-import { CommentModel, tranformDateComment } from '../../../_models/comment.model';
+import { CommentModel, tranformTime } from '../../../_models/comment.model';
 import { CommentService } from '../../../_services/comment.service';
+import * as moment from 'moment';
+import { CommonService } from 'src/app/modules/partials/_services/common.service';
+import { FileStorageModel } from '../../../_models/work.model';
 
 @Component({
   selector: 'app-workspace-task-detail',
@@ -24,7 +27,8 @@ export class WorkspaceTaskDetailComponent implements OnInit {
   form: FormGroup;
   commentsSubject: BehaviorSubject<CommentModel[]> = new BehaviorSubject<CommentModel[]>([]);
   comments$: Observable<CommentModel[]> = this.commentsSubject.asObservable();
-  tranformTime = tranformDateComment;
+
+  tranformTime = tranformTime;
 
   listImportant = [
     {
@@ -48,6 +52,7 @@ export class WorkspaceTaskDetailComponent implements OnInit {
     private fb: FormBuilder,
     private taskService: TaskService,
     private commentService: CommentService,
+    private commonService: CommonService,
   ) {
     this.userLogged = this.authService.currentUserValue;
   }
@@ -65,7 +70,7 @@ export class WorkspaceTaskDetailComponent implements OnInit {
       title: [this.task.title],
       description: [this.task?.description || ''],
       assigneeId: [this.task.assignee.id],
-      deadline: [this.task.deadline],
+      deadline: [this.task?.deadline || null],
       important: [this.task?.important || TaskImportantEnum.Low],
       commentContent: [''],
     });
@@ -87,10 +92,14 @@ export class WorkspaceTaskDetailComponent implements OnInit {
             const list = members.map((member) => {
               const u = member.user;
               if (u.id === this.userLogged.id) {
-                u.fullName = u.fullName + ' (tôi)';
+                u.selectName = u.fullName + ' (tôi)';
+              } else {
+                u.selectName = u.fullName + ' (' + u.email + ')';
               }
               return u;
             });
+            console.log(list);
+
             this.usersSubject.next(list);
           }
         });
@@ -127,11 +136,68 @@ export class WorkspaceTaskDetailComponent implements OnInit {
     });
   }
 
+  updateAssignee(user: any) {
+    if (!user) {
+      return;
+    }
+    this.taskService.updateTask(this.task.id, { assigneeId: user.id }).subscribe((res) => {
+      if (res.success) {
+        this.task.assignee = user;
+      }
+    });
+  }
+
+  updateTaskDeadline(event: any) {
+    if (!event) {
+      return;
+    }
+    const deadline = moment(event).format('YYYY-MM-DD');
+    this.taskService.updateTask(this.task.id, { deadline }).subscribe((res) => {
+      if (res) {
+        this.task.deadline = event;
+      }
+    });
+  }
+
   updateCompleteTask() {
     this.taskService.updateTask(this.task.id, { completed: !this.task.completed }).subscribe((res) => {
       if (res) {
         this.task.completed = !this.task.completed;
       }
     });
+  }
+
+  readURL(event: Event | any) {
+    let files: File[] = [];
+    if (event.target.files) {
+      const f = event.target.files;
+      for (let i = 0; i < f.length; i++) {
+        const file = f[i];
+        files.push(file);
+      }
+    }
+    let data: any = [];
+    if (files.length > 0) {
+      this.commonService.upLoadFiles(files).subscribe((filePaths) => {
+        if (filePaths.length > 0) {
+          filePaths.forEach((filePath) => {
+            data.push({
+              path: filePath.path,
+              name: filePath.originalname,
+              type: filePath.type,
+            });
+          });
+          this.taskService.addFilesToTask(this.task.id, { files: data }).subscribe((res) => {
+            if (res.success) {
+              res.files.forEach((file) => {
+                const fi = new FileStorageModel();
+                fi.setData(file);
+                this.task.files.push(fi);
+              });
+            }
+          });
+        }
+      });
+    }
   }
 }

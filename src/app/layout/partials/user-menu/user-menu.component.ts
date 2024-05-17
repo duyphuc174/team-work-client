@@ -15,7 +15,6 @@ export class UserMenuComponent {
 
   constructor(private authService: AuthService, private router: Router, private bsModalService: BsModalService) {
     this.userLogged = this.authService.currentUserValue;
-    console.log(this.userLogged);
   }
 
   goToProfile() {

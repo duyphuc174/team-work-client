@@ -1,0 +1,67 @@
+<app-header-title [breadcrumbTitles]="[{ name: 'Danh sách việc cần làm', routerLink: '' }]"></app-header-title>
+
+<div class="card">
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" class="pb-3">Tên công việc</th>
+          <th scope="col" class="pb-3" style="width: 200px">Độ quan trọng</th>
+          <th scope="col" class="pb-3">Thời hạn</th>
+          <th scope="col" class="pb-3" style="width: 250px">Người thực hiện</th>
+          <th scope="col" class="pb-3 width-10"></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="todoList$ | async as todoList">
+        <ng-container *ngFor="let todo of todoList">
+          <tr class="" style="">
+            <td class="py-3" colspan="5">
+              <span class="fw-medium">
+                <i class="fa-solid fa-grip-vertical"></i>
+                Công việc: {{ todo.work.title }}
+              </span>
+            </td>
+          </tr>
+          <ng-container *ngIf="todo.tasks.length">
+            <ng-container *ngFor="let task of todo.tasks">
+              <tr class="" [ngClass]="{ 'opacity-50': task.completed }">
+                <td class="py-3">
+                  <input
+                    class="form-check-input me-2 ms-3"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                    [checked]="task.completed"
+                    (change)="markTaskComplete(task)"
+                  />
+                  <span
+                    class="table-item-info"
+                    (click)="openTaskDetail(task)"
+                    [ngClass]="{ 'text-decoration-line-through text-muted': task.completed }"
+                    >{{ task.title }}</span
+                  >
+                </td>
+                <td class="py-3">
+                  <span class="p-2 badge badge-{{ getTaskImportantColor(task.important) }}">
+                    {{ getTaskImportantName(task.important) }}
+                  </span>
+                </td>
+                <td class="py-3">
+                  {{ task.deadline | date : 'dd/MM/yyyy' }}
+                </td>
+                <td class="py-3">
+                  <app-user-avatar-infor [user]="task.assignee"></app-user-avatar-infor>
+                </td>
+                <td class="py-3">
+                  <div class="d-flex flex-row align-items-center">
+                    <a class="text-danger cursor-pointer" tooltip="Xóa"><i class="fa-solid fa-trash fs-6"></i></a>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

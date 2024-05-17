@@ -1,1 +1,21 @@
-<p>notification-list works!</p>
+<div class="card">
+  <div class="card-header py-3">
+    <h5 class="mb-0 text-primary">
+      {{ title }}
+      <!-- <span class="badge rounded-pill bg-danger"> 99+ </span> -->
+    </h5>
+  </div>
+  <div class="card-body">
+    <ng-container *ngIf="notifications.length; else noHaveNoti">
+      <ng-container *ngFor="let noti of notifications">
+        <app-notification-list-item
+          [notification]="noti"
+          [showWorkspaceName]="!isWorkspaceNotification"
+        ></app-notification-list-item>
+      </ng-container>
+    </ng-container>
+    <ng-template #noHaveNoti>
+      <span>Hiện tại không có thông báo!</span>
+    </ng-template>
+  </div>
+</div>

@@ -16,6 +16,10 @@ export class TaskHttpService {
     return this.http.get<any>(`${API_TASK_URL}`, { params });
   }
 
+  getTaskById(id: number): Observable<any> {
+    return this.http.get<any>(`${API_TASK_URL}/${id}`);
+  }
+
   createTask(data: any): Observable<any> {
     return this.http.post<any>(API_TASK_URL, data);
   }
@@ -26,5 +30,9 @@ export class TaskHttpService {
 
   deleteTask(id: number): Observable<any> {
     return this.http.delete<any>(`${API_TASK_URL}/${id}`);
+  }
+
+  addFilesToTask(id: number, data: any): Observable<any> {
+    return this.http.post<any>(`${API_TASK_URL}/${id}/files`, data);
   }
 }

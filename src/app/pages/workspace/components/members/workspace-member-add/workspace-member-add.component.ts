@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { UserService } from 'src/app/modules/auth/_services/user.service';
-import { WorkspaceService } from '../../_services/workspace.service';
+import { WorkspaceService } from '../../../_services/workspace.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({

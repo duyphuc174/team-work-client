@@ -13,7 +13,7 @@ export class MemberHttpService {
   constructor(private http: HttpClient) {}
 
   getMembers(workspaceId: number, params?: any): Observable<any> {
-    return this.http.get<any>(`${API_MEMBER_URL}/${workspaceId}`, { params });
+    return this.http.get<any>(`${API_MEMBER_URL}/workspace/${workspaceId}`, { params });
   }
 
   updateRole(memberId: number, role: string): Observable<any> {

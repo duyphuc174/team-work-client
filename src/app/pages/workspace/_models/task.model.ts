@@ -1,4 +1,5 @@
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { FileStorageModel, WorkModel } from './work.model';
 
 export class TaskModel {
   id: number;
@@ -8,6 +9,8 @@ export class TaskModel {
   deadline: Date;
   completed: boolean;
   assignee: UserModel;
+  files: FileStorageModel[] = [];
+  // work: WorkModel;
 
   setData(data) {
     this.id = data.id;
@@ -16,11 +19,23 @@ export class TaskModel {
     this.important = data.important || TaskImportantEnum.Low;
     this.deadline = data.deadline ? new Date(data.deadline) : null;
     this.completed = data?.completed || false;
-    if (data.assignee) {
+    if (data?.assignee) {
       const user = new UserModel();
       user.setData(data.assignee);
       this.assignee = user;
     }
+    if (data?.files?.length) {
+      data.files.map((file) => {
+        const f = new FileStorageModel();
+        f.setData(file);
+        this.files.push(f);
+      });
+    }
+    // if (data?.work) {
+    //   const work = new WorkModel();
+    //   work.setData(data.work);
+    //   this.work = work;
+    // }
   }
 }
 

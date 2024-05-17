@@ -16,7 +16,7 @@
     <tbody>
       <ng-container *ngIf="tasks$ | async as tasks">
         <ng-container *ngFor="let task of tasks">
-          <tr>
+          <tr class="" [ngClass]="{ 'opacity-50': task.completed }">
             <td class="py-3">
               <input
                 class="form-check-input me-2"
@@ -33,7 +33,11 @@
                 >{{ task.title }}</span
               >
             </td>
-            <td class="py-3">{{ task.important }}</td>
+            <td class="py-3">
+              <span class="p-2 badge badge-{{ getTaskImportantColor(task.important) }}">
+                {{ getTaskImportantName(task.important) }}
+              </span>
+            </td>
             <td class="py-3">{{ task.deadline | date : 'dd/MM/yyyy' }}</td>
             <td class="py-3">
               <app-user-avatar-infor [user]="task.assignee"></app-user-avatar-infor>

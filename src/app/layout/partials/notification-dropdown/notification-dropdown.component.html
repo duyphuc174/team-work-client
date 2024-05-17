@@ -24,19 +24,28 @@
     aria-expanded="false"
   >
     <i class="fas fa-bell fs-5"></i>
-    <span class="badge rounded-pill badge-notification bg-danger">12</span>
+    <span *ngIf="unReadCount$ | async as count" class="badge rounded-pill badge-notification bg-danger">{{
+      count
+    }}</span>
   </a>
   <div class="dropdown-menu dropdown-menu-end" style="width: 350px" aria-labelledby="navbarDropdownMenuLink">
     <div class="border-bottom">
       <h4 class="p-3 text-primary mb-0">Thông báo</h4>
     </div>
-    <div class="p-2">
-      <ng-container *ngFor="let i of [1, 2, 3]">
-        <app-notification-item></app-notification-item>
+    <div class="p-2" *ngIf="notifications$ | async as notifications">
+      <ng-container *ngIf="notifications.length; else noHaveNotis">
+        <ng-container *ngFor="let noti of notifications">
+          <app-notification-list-item [notification]="noti"></app-notification-list-item>
+        </ng-container>
       </ng-container>
+      <ng-template #noHaveNotis>
+        <div class="px-2 py-1">
+          <span class="text-muted">Không có thông báo mới!</span>
+        </div>
+      </ng-template>
     </div>
     <div class="text-center border-top py-2">
-      <a class="cursor-pointer text-primary">Xem tất cả</a>
+      <a class="cursor-pointer text-primary" routerLink="/notifications">Xem tất cả</a>
     </div>
   </div>
 </div>

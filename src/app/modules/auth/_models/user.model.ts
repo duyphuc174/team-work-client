@@ -13,6 +13,7 @@ export class UserModel extends AuthModel {
   description: string;
   workspaceRole: string;
   role: UserRoleModel;
+  selectName?: string;
 
   constructor(data: any = {}) {
     super();
