@@ -61,8 +61,32 @@ export class TaskService {
     );
   }
 
+  deleteTask(id: number): Observable<any> {
+    return this.taskHttpService.deleteTask(id).pipe(
+      map((res) => {
+        return res;
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of(undefined);
+      }),
+    );
+  }
+
   addFilesToTask(id: number, data: any): Observable<any> {
     return this.taskHttpService.addFilesToTask(id, data).pipe(
+      map((res) => {
+        return res;
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of(undefined);
+      }),
+    );
+  }
+
+  deleteFile(id: number, fileId: number): Observable<any> {
+    return this.taskHttpService.deleteFile(id, fileId).pipe(
       map((res) => {
         return res;
       }),

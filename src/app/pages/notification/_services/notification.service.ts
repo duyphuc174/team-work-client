@@ -27,7 +27,8 @@ export class NotificationService {
           noti.setData(notification);
           return noti;
         });
-
+        this.readCountSubject.next(res.readCount);
+        this.unReadCountSubject.next(res.unReadCount);
         return { notifications, readCount: res.readCount, unReadCount: res.unReadCount };
       }),
       catchError((err) => of(err)),

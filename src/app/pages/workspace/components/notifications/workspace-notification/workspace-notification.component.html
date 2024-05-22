@@ -7,6 +7,8 @@
       [title]="'Thông báo chưa đọc'"
       [notifications]="unReadNotifications$ | async"
       [isWorkspaceNotification]="true"
+      [count]="unReadCount$ | async"
+      (handleReadMore)="loadUnreadNotifications($event)"
     ></app-notification-list>
   </div>
   <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12">
@@ -14,6 +16,8 @@
       [title]="'Thông báo đã đọc'"
       [notifications]="readNotifications$ | async"
       [isWorkspaceNotification]="true"
+      [count]="readCount$ | async"
+      (handleReadMore)="loadReadNotifications($event)"
     ></app-notification-list>
   </div>
 </div>

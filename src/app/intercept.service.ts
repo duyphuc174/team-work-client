@@ -1,8 +1,9 @@
-import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthModel } from './modules/auth/_models/auth.model';
+import { HandleHttpMessageServiceService } from './modules/partials/_services/handle-http-message-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { AuthModel } from './modules/auth/_models/auth.model';
 export class InterceptService {
   private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
 
-  constructor() {}
+  constructor(private handleMessage: HandleHttpMessageServiceService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (request.headers.has('Authorization')) {
@@ -39,6 +40,18 @@ export class InterceptService {
       });
     }
 
-    return next.handle(authenticationRequest);
+    return next.handle(authenticationRequest).pipe(
+      tap((event) => {
+        if (event instanceof HttpResponse && request.method !== 'GET') {
+          this.handleMessage.showSuccess('Thao tác thành công!');
+        }
+      }),
+      catchError((err) => {
+        if (request.method !== 'GET') {
+          this.handleMessage.showError(err.error.message);
+        }
+        return throwError(err);
+      }),
+    );
   }
 }

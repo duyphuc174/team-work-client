@@ -1,0 +1,8 @@
+.show-image {
+  &-delete {
+    display: none;
+  }
+  &:hover &-delete {
+    display: block !important;
+  }
+}

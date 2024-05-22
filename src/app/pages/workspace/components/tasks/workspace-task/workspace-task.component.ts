@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WorkspaceService } from '../../../_services/workspace.service';
 import { ActivatedRoute } from '@angular/router';
 import { TaskModel, getTaskImportantColor, getTaskImportantName } from '../../../_models/task.model';
@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { TaskService } from '../../../_services/task.service';
 import { WorkspaceTaskDetailComponent } from '../workspace-task-detail/workspace-task-detail.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 class Work {
   id: number;
@@ -22,29 +23,71 @@ class Work {
   templateUrl: './workspace-task.component.html',
   styleUrls: ['./workspace-task.component.scss'],
 })
-export class WorkspaceTaskComponent {
+export class WorkspaceTaskComponent implements OnInit {
   todoListSubjet: BehaviorSubject<{ tasks: TaskModel[]; work: Work }[]> = new BehaviorSubject<any>([]);
   todoList$: Observable<{ tasks: TaskModel[]; work: Work }[]> = this.todoListSubjet.asObservable();
+  workspaceId: number;
   getTaskImportantColor = getTaskImportantColor;
   getTaskImportantName = getTaskImportantName;
+  form: FormGroup;
+  params: any = {
+    completed: 'false',
+    sortBy: 'important',
+  };
+
+  listSelectComplete = [
+    {
+      value: 'false',
+      label: 'Chưa hoàn thành',
+    },
+    {
+      value: null,
+      label: 'Tất cả',
+    },
+  ];
+
+  listSortBy = [
+    {
+      value: 'important',
+      label: 'Độ quan trọng',
+    },
+    {
+      value: 'deadline',
+      label: 'Ngày hết hạn',
+    },
+  ];
+  selectCompleteName = 'Chưa hoàn thành';
   constructor(
     private workspaceService: WorkspaceService,
     private activedRoute: ActivatedRoute,
     private offCanvas: NgbOffcanvas,
     private taskService: TaskService,
+    private fb: FormBuilder,
   ) {
     this.activedRoute.params.subscribe((params: any) => {
-      const workspaceId = +params.id;
-      if (workspaceId) {
-        this.workspaceService.getWorkspaceById(workspaceId).subscribe((workspace) => {
+      this.workspaceId = +params.id;
+      if (this.workspaceId) {
+        this.workspaceService.getWorkspaceById(this.workspaceId).subscribe((workspace) => {
           this.loadData();
         });
       }
     });
   }
 
+  ngOnInit(): void {
+    this.initForm();
+    this.form.controls['find'].valueChanges.subscribe((value) => {
+      if (value) {
+        this.params.find = value;
+      } else {
+        this.params.find = '';
+      }
+      this.loadData();
+    });
+  }
+
   loadData() {
-    this.workspaceService.getTasks().subscribe((tasks) => {
+    this.workspaceService.getTasks(this.params).subscribe((tasks) => {
       if (tasks) {
         const result = tasks.reduce((acc: any, item: any) => {
           const workId = item.work.id;
@@ -58,8 +101,15 @@ export class WorkspaceTaskComponent {
           return acc;
         }, {});
         this.todoListSubjet.next(Object.values(result));
-        console.log(Object.values(result));
       }
+    });
+  }
+
+  initForm() {
+    this.form = this.fb.group({
+      completed: ['false'],
+      sortBy: ['important'],
+      find: [''],
     });
   }
 
@@ -77,5 +127,31 @@ export class WorkspaceTaskComponent {
         task.completed = !task.completed;
       }
     });
+  }
+
+  filterChange($event) {
+    this.loadData();
+  }
+
+  filterCompleted($event) {
+    if (!$event.value) {
+      delete this.params.completed;
+    } else {
+      this.params.completed = $event.value;
+    }
+    console.log(this.params);
+
+    this.loadData();
+  }
+
+  filterSortBy($event) {
+    if (!$event?.value) {
+      delete this.params.sortBy;
+    } else {
+      this.params.sortBy = $event.value;
+    }
+    console.log(this.params);
+
+    this.loadData();
   }
 }

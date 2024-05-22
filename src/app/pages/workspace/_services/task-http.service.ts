@@ -35,4 +35,8 @@ export class TaskHttpService {
   addFilesToTask(id: number, data: any): Observable<any> {
     return this.http.post<any>(`${API_TASK_URL}/${id}/files`, data);
   }
+
+  deleteFile(id: number, fileId: number): Observable<any> {
+    return this.http.delete<any>(`${API_TASK_URL}/${id}/files/${fileId}`);
+  }
 }

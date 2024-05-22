@@ -20,17 +20,18 @@ export class NotificationDropdownComponent implements OnInit, OnDestroy {
   constructor(private notificationService: NotificationService) {}
 
   ngOnInit(): void {
-    // this.subr = setInterval(() => {
     this.loadNotifications();
-    // }, 5000);
+
+    // this.subr = setInterval(() => {
+    //   this.loadNotifications();
+    // }, 10000);
   }
 
   loadNotifications() {
-    this.notificationService.getNotifications().subscribe((res) => {
+    this.notificationService.getNotifications({ limit: 5, offset: 0 }).subscribe((res) => {
       if (res) {
         this.notificationsSubject.next(res.notifications);
         this.unReadCountSubject.next(res.unReadCount);
-        this.notificationService.notificationsSubject.next(res.notifications);
       }
     });
   }

@@ -16,10 +16,14 @@ export class WorkspaceCreateComponent implements OnInit {
   workspace: WorkspaceModel;
   form: FormGroup;
   onClose$: Subject<any> = new Subject<any>();
+  title: string;
+  isViewDetail: boolean = false;
+  isShowEdit: boolean = true;
 
   constructor(private fb: FormBuilder, private workspaceService: WorkspaceService, public bsModalRef: BsModalRef) {}
 
   ngOnInit(): void {
+    this.initTitle();
     this.initForm();
   }
 
@@ -55,6 +59,22 @@ export class WorkspaceCreateComponent implements OnInit {
       name: [this.workspace?.name ? this.workspace?.name : '', [Validators.required]],
       description: [this.workspace?.description ? this.workspace?.description : ''],
     });
+
+    if (this.workspaceService.userLoggedRole === 'member') {
+      this.form.disable();
+    }
+  }
+
+  initTitle() {
+    if (this.isViewDetail) {
+      this.title = 'Thông tin nhóm';
+      return;
+    }
+    if (this.workspace?.id) {
+      this.title = 'Chỉnh sửa nhóm';
+    } else {
+      this.title = 'Tạo nhóm mới';
+    }
   }
 
   handleClickCreateButton(ws: any) {

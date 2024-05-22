@@ -86,4 +86,16 @@ export class WorkService {
       }),
     );
   }
+
+  deleteFile(id: number, fileId: number): Observable<any> {
+    return this.workHttpService.deleteFile(id, fileId).pipe(
+      map((res: any) => {
+        return res;
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of(undefined);
+      }),
+    );
+  }
 }

@@ -9,10 +9,10 @@
       <div class="d-flex flex-column ms-2">
         <p class="mb-0 max-line-3" [innerHTML]="notification.content | boldText"></p>
         <div class="d-flex align-items-center" style="font-size: 0.9rem">
-          <span class="text-primary">{{ tranformTime(notification.createdAt) }} </span>
+          <span class="text-primary" style="white-space: nowrap">{{ tranformTime(notification.createdAt) }}</span>
           <ng-container *ngIf="showWorkspaceName">
             <i class="fa-solid fa-circle px-2 text-secondary" style="font-size: 0.3rem"></i>
-            <span
+            <span class="max-line-1"
               >trong nhóm
               <a class="fw-medium" routerLink="/workspace/{{ notification.workspace.id }}">{{
                 notification.workspace.name

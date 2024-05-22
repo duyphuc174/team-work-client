@@ -24,8 +24,8 @@ export class WorkspaceWorkCreateComponent implements OnInit {
   userLogged: UserModel;
   membersSubject: BehaviorSubject<MemberModel[]> = new BehaviorSubject<MemberModel[]>([]);
   members$: Observable<MemberModel[]> = this.membersSubject.asObservable();
-  sprintsSubject: BehaviorSubject<SprintModel[]> = new BehaviorSubject<SprintModel[]>([]);
-  sprints$: Observable<SprintModel[]> = this.sprintsSubject.asObservable();
+  // sprintsSubject: BehaviorSubject<SprintModel[]> = new BehaviorSubject<SprintModel[]>([]);
+  // sprints$: Observable<SprintModel[]> = this.sprintsSubject.asObservable();
   currentSprint: SprintModel;
   followers: UserModel[] = [];
   onClose$: Subject<any> = new Subject<any>();
@@ -40,13 +40,13 @@ export class WorkspaceWorkCreateComponent implements OnInit {
     private workspaceService: WorkspaceService,
     public bsModalRef: BsModalRef,
   ) {
-    if (!this.currentSprint) {
-      this.workspaceService.getSprints().subscribe((sprints) => {
-        if (sprints) {
-          this.sprintsSubject.next(sprints);
-        }
-      });
-    }
+    // if (!this.currentSprint) {
+    //   this.workspaceService.getSprints().subscribe((sprints) => {
+    //     if (sprints) {
+    //       this.sprintsSubject.next(sprints);
+    //     }
+    //   });
+    // }
   }
 
   ngOnInit(): void {
@@ -107,7 +107,7 @@ export class WorkspaceWorkCreateComponent implements OnInit {
       ...formValue,
       startDate: moment(formValue.startDate).format('YYYY-MM-DD'),
       endDate: moment(formValue.endDate).format('YYYY-MM-DD'),
-      sprintId: this.currentSprint.id,
+      sprintId: this.currentSprint?.id || undefined,
     };
 
     if (this.work?.id) {

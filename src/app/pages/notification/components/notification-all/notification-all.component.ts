@@ -9,28 +9,44 @@ import { NotificationService } from '../../_services/notification.service';
   styleUrls: ['./notification-all.component.scss'],
 })
 export class NotificationAllComponent implements OnInit {
-  notifications$: Observable<NotificationModel[]>;
+  notificationsSubject: BehaviorSubject<NotificationModel[]> = new BehaviorSubject<NotificationModel[]>([]);
+  notifications$: Observable<NotificationModel[]> = this.notificationsSubject.asObservable();
   readNotificationSubject: BehaviorSubject<NotificationModel[]> = new BehaviorSubject<NotificationModel[]>([]);
   readNotification$: Observable<NotificationModel[]> = this.readNotificationSubject.asObservable();
 
-  readCountSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  readCount$: Observable<number>;
   unReadCount$: Observable<number>;
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(private notificationService: NotificationService) {
+    this.readCount$ = this.notificationService.readCount$;
+    this.unReadCount$ = this.notificationService.unReadCount$;
+  }
 
   ngOnInit(): void {
     this.loadData();
   }
 
   loadData() {
-    this.notifications$ = this.notificationService.notifications$;
     this.loadReadNotifications();
+    this.loadUnReadNotifications();
   }
 
-  loadReadNotifications() {
-    this.notificationService.getNotifications({ type: 'read' }).subscribe((res) => {
+  loadReadNotifications(params?: any) {
+    this.notificationService.getNotifications({ ...params, type: 'read' }).subscribe((res) => {
       if (res) {
-        this.readNotificationSubject.next(res.notifications);
+        const listNoti = this.readNotificationSubject.value;
+        listNoti.push(...res.notifications);
+        this.readNotificationSubject.next(listNoti);
+      }
+    });
+  }
+
+  loadUnReadNotifications(params?: any) {
+    this.notificationService.getNotifications(params).subscribe((res) => {
+      if (res) {
+        const listNoti = this.notificationsSubject.value;
+        listNoti.push(...res.notifications);
+        this.notificationsSubject.next(listNoti);
       }
     });
   }

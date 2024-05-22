@@ -1,7 +1,32 @@
 <ng-container *ngIf="file">
-  <div class="me-3 mb-4" [style]="{ width: size.width + 'px', height: size.height + 'px' }" (click)="showImage()">
+  <div
+    class="me-3 mb-4 position-relative show-image"
+    [style]="{ width: size.width + 'px', height: size.height + 'px' }"
+  >
     <img class="w-100 h-100 rounded" style="background-size: contain" [src]="file.link" alt="{{ file.name }}" />
     <p class="mb-0 max-line-1" tooltip="{{ file.name }}">{{ file.name }}</p>
+
+    <div class="position-absolute top-0 end-0 mt-1 me-1 show-image-delete">
+      <div class="d-flex flex-row">
+        <div
+          *ngIf="showDeleteButton"
+          (click)="deleteFile()"
+          tooltip="Xóa file"
+          class="d-flex align-items-center justify-content-center p-2 rounded-circle cursor-pointer me-2"
+          style="background-color: var(--mdb-gray-300)"
+        >
+          <i class="fa-solid fa-trash text-danger fs-6"></i>
+        </div>
+        <div
+          (click)="showImage()"
+          tooltip="Xem"
+          class="d-flex align-items-center justify-content-center p-2 rounded-circle cursor-pointer"
+          style="background-color: var(--mdb-gray-300)"
+        >
+          <i class="fa-solid fa-eye text-info fs-6"></i>
+        </div>
+      </div>
+    </div>
   </div>
 </ng-container>
 

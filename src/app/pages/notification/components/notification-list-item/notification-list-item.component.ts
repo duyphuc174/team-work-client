@@ -33,6 +33,7 @@ export class NotificationListItemComponent {
     if (this.notification?.link) {
       switch (this.notification.type) {
         case 'member':
+        case 'work':
           this.router.navigate([this.notification.link]);
           break;
         case 'task':

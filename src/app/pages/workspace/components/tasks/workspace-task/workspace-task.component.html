@@ -2,6 +2,39 @@
 
 <div class="card">
   <div class="card-body">
+    <form [formGroup]="form" class="mb-2">
+      <div class="d-flex flex-row justify-content-between">
+        <div>
+          <input type="text" class="form-control" placeholder="Tìm kiếm" formControlName="find" />
+        </div>
+        <div class="d-flex flex-row">
+          <div class="me-3">
+            <ng-select
+              [items]="listSortBy"
+              bindLabel="label"
+              bindValue="value"
+              formControlName="sortBy"
+              placeholder="Sắp xếp theo"
+              style="min-width: 180px"
+              (change)="filterSortBy($event)"
+              (clear)="filterSortBy($event)"
+            ></ng-select>
+          </div>
+          <div>
+            <ng-select
+              style="min-width: 180px"
+              [items]="listSelectComplete"
+              bindLabel="label"
+              bindValue="value"
+              placeholder="Hoành thành"
+              formControlName="completed"
+              [clearable]="false"
+              (change)="filterCompleted($event)"
+            ></ng-select>
+          </div>
+        </div>
+      </div>
+    </form>
     <table class="table">
       <thead>
         <tr>
@@ -18,7 +51,8 @@
             <td class="py-3" colspan="5">
               <span class="fw-medium">
                 <i class="fa-solid fa-grip-vertical"></i>
-                Công việc: {{ todo.work.title }}
+                Công việc:
+                <a routerLink="/workspaces/{{ workspaceId }}/works/{{ todo.work.id }}">{{ todo.work.title }}</a>
               </span>
             </td>
           </tr>

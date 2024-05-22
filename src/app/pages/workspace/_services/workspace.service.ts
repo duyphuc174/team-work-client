@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WorkspaceHtppService } from './workspace-htpp.service';
 import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
-import { WorkspaceModel } from '../_models/workspace.model';
+import { MemberRoleEnum, WorkspaceModel } from '../_models/workspace.model';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { SprintModel } from '../_models/sprint.model';
 import { AuthService } from 'src/app/modules/auth/_services/auth.service';
@@ -18,7 +18,12 @@ export class WorkspaceService {
   currentWorksapceSubject: BehaviorSubject<WorkspaceModel> = new BehaviorSubject<WorkspaceModel>(null);
   currentWorkspace$: Observable<WorkspaceModel> = this.currentWorksapceSubject.asObservable();
 
-  constructor(private workspaceHttpService: WorkspaceHtppService) {}
+  userLogged: UserModel;
+  userLoggedRole: MemberRoleEnum;
+
+  constructor(private workspaceHttpService: WorkspaceHtppService, private authService: AuthService) {
+    this.userLogged = this.authService.currentUserValue;
+  }
 
   getWorkspaces(): Observable<any> {
     return this.workspaceHttpService.getWorkspaces().pipe(
@@ -58,6 +63,10 @@ export class WorkspaceService {
         const w = new WorkspaceModel();
         w.setData(res);
         this.currentWorksapceSubject.next(w);
+        const m = w.members.find((m) => m.user.id === this.userLogged.id);
+        if (m) {
+          this.userLoggedRole = m.role;
+        }
         return w;
       }),
       catchError((err) => {

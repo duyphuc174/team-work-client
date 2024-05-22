@@ -14,8 +14,12 @@ export class WorkspaceNotificationComponent {
   unReadNotifications$: Observable<NotificationModel[]> = this.unReadNotificationSubject.asObservable();
   readNotificationSubject: BehaviorSubject<NotificationModel[]> = new BehaviorSubject<NotificationModel[]>([]);
   readNotifications$: Observable<NotificationModel[]> = this.readNotificationSubject.asObservable();
-  notiReadCount: number;
-  notiUnReadCount: number;
+
+  readCountSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  readCount$: Observable<number> = this.readCountSubject.asObservable();
+
+  unReadCountSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  unReadCount$: Observable<number> = this.unReadCountSubject.asObservable();
 
   workspaceName: string;
 
@@ -32,24 +36,30 @@ export class WorkspaceNotificationComponent {
   }
 
   loadData() {
-    this.loadReadNotifications({ type: 'read' });
+    this.loadReadNotifications();
     this.loadUnreadNotifications();
   }
 
   loadUnreadNotifications(params?: any) {
     this.workspaceService.getNotifications(params).subscribe((res) => {
       if (res) {
-        this.unReadNotificationSubject.next(res.notifications);
-        this.notiUnReadCount = res.unreadCount;
+        const listNoti = this.unReadNotificationSubject.value;
+        listNoti.push(...res.notifications);
+        this.unReadNotificationSubject.next(listNoti);
+        this.unReadCountSubject.next(res.unReadCount);
       }
     });
   }
 
   loadReadNotifications(params?: any) {
-    this.workspaceService.getNotifications(params).subscribe((res) => {
+    console.log(params);
+
+    this.workspaceService.getNotifications({ ...params, type: 'read' }).subscribe((res) => {
       if (res) {
-        this.readNotificationSubject.next(res.notifications);
-        this.notiReadCount = res.readCount;
+        const listNoti = this.readNotificationSubject.value;
+        listNoti.push(...res.notifications);
+        this.readNotificationSubject.next(listNoti);
+        this.readCountSubject.next(res.readCount);
       }
     });
   }

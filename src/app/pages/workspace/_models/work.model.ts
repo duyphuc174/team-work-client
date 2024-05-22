@@ -1,6 +1,7 @@
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { ImportantModel } from './workspace.model';
 import { SprintModel } from './sprint.model';
+import { TaskModel } from './task.model';
 
 export class WorkModel {
   id: number;
@@ -13,6 +14,10 @@ export class WorkModel {
   endDate: Date;
   sprint: SprintModel;
   files: FileStorageModel[] = [];
+  tasks?: TaskModel[] = [];
+  tasksCount?: number;
+  tasksCompletedCount?: number;
+  progress: number;
   setData(data) {
     this.id = data.id;
     this.title = data.title;
@@ -42,6 +47,17 @@ export class WorkModel {
         this.files.push(f);
       });
     }
+    if (data?.tasks?.length) {
+      data.tasks.map((task) => {
+        const t = new TaskModel();
+        t.setData(task);
+        this.tasks.push(t);
+      });
+    }
+
+    this.tasksCount = data?.tasksCount || 0;
+    this.tasksCompletedCount = data?.tasksCompletedCount || 0;
+    this.progress = this.tasksCompletedCount / this.tasksCount || 0;
   }
 }
 

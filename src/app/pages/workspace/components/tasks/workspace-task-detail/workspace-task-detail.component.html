@@ -6,10 +6,10 @@
   style="width: 550px"
 >
   <div class="offcanvas-header border-bottom">
-    <div class="d-flex flex-row justify-content-between w-100">
+    <div class="d-flex flex-row justify-content-between align-items-center w-100">
       <div>
         <button class="btn btn-{{ task.completed ? 'primary' : 'outline-primary' }}" (click)="updateCompleteTask()">
-          Hoàn Thành
+          {{ task.completed ? 'Đã hoàn thành' : 'Hoàn thành' }}
         </button>
         <label for="files-task" class="btn bnt-sm btn-secondary ms-3">
           <i class="fa-solid fa-paperclip me-1"></i>
@@ -17,8 +17,8 @@
         </label>
         <input id="files-task" type="file" accept=".png, .jpg, .jpeg" (change)="readURL($event)" multiple hidden />
       </div>
-      <div>
-        <i class="fa-solid fa-arrow-right"></i>
+      <div class="cursor-pointer" (click)="deleteTask()" tooltip="Xóa">
+        <i class="fa-solid fa-trash text-danger fs-5"></i>
       </div>
     </div>
   </div>
@@ -47,7 +47,12 @@
     <div class="mb-3" *ngIf="task?.files?.length">
       <div class="d-flex flex-row flex-wrap">
         <ng-container *ngFor="let f of task.files">
-          <app-image-show [file]="f" [size]="{ width: 100, height: 80 }"></app-image-show>
+          <app-image-show
+            [file]="f"
+            [size]="{ width: 100, height: 80 }"
+            [showDeleteButton]="true"
+            (handleDelete)="deleteFile($event)"
+          ></app-image-show>
         </ng-container>
       </div>
     </div>

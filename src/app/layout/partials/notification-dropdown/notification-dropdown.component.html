@@ -32,7 +32,7 @@
     <div class="border-bottom">
       <h4 class="p-3 text-primary mb-0">Thông báo</h4>
     </div>
-    <div class="p-2" *ngIf="notifications$ | async as notifications">
+    <div class="p-2 overflow-y-scroll" *ngIf="notifications$ | async as notifications" style="max-height: 60vh">
       <ng-container *ngIf="notifications.length; else noHaveNotis">
         <ng-container *ngFor="let noti of notifications">
           <app-notification-list-item [notification]="noti"></app-notification-list-item>

@@ -12,6 +12,7 @@ import { CommentService } from '../../../_services/comment.service';
 import * as moment from 'moment';
 import { CommonService } from 'src/app/modules/partials/_services/common.service';
 import { FileStorageModel } from '../../../_models/work.model';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-workspace-task-detail',
@@ -27,6 +28,8 @@ export class WorkspaceTaskDetailComponent implements OnInit {
   form: FormGroup;
   commentsSubject: BehaviorSubject<CommentModel[]> = new BehaviorSubject<CommentModel[]>([]);
   comments$: Observable<CommentModel[]> = this.commentsSubject.asObservable();
+
+  onDelete$: Subject<any> = new Subject<any>();
 
   tranformTime = tranformTime;
 
@@ -53,6 +56,7 @@ export class WorkspaceTaskDetailComponent implements OnInit {
     private taskService: TaskService,
     private commentService: CommentService,
     private commonService: CommonService,
+    public offCanvas: NgbOffcanvas,
   ) {
     this.userLogged = this.authService.currentUserValue;
   }
@@ -152,6 +156,9 @@ export class WorkspaceTaskDetailComponent implements OnInit {
       return;
     }
     const deadline = moment(event).format('YYYY-MM-DD');
+    if (deadline === moment(this.form.value.deadline).format('YYYY-MM-DD')) {
+      return;
+    }
     this.taskService.updateTask(this.task.id, { deadline }).subscribe((res) => {
       if (res) {
         this.task.deadline = event;
@@ -165,6 +172,23 @@ export class WorkspaceTaskDetailComponent implements OnInit {
         this.task.completed = !this.task.completed;
       }
     });
+  }
+
+  show($event) {
+    console.log($event);
+  }
+
+  deleteFile(fileId: any) {
+    this.taskService.deleteFile(this.task.id, fileId).subscribe((res) => {
+      if (res.success) {
+        this.task.files = this.task.files.filter((file) => file.id !== fileId);
+      }
+    });
+  }
+
+  deleteTask() {
+    this.onDelete$.next(this.task);
+    this.offCanvas.dismiss('Cross click');
   }
 
   readURL(event: Event | any) {

@@ -1,8 +1,8 @@
 <div class="card">
   <div class="card-header py-3">
-    <h5 class="mb-0 text-primary">
+    <h5 class="mb-0 text-primary d-flex align-items-center">
       {{ title }}
-      <!-- <span class="badge rounded-pill bg-danger"> 99+ </span> -->
+      <span class="badge rounded-pill bg-danger py-1 px-2 ms-2" style="font-size: 0.8rem"> {{ count }} </span>
     </h5>
   </div>
   <div class="card-body">
@@ -13,6 +13,9 @@
           [showWorkspaceName]="!isWorkspaceNotification"
         ></app-notification-list-item>
       </ng-container>
+      <div class="text-center" *ngIf="notifications.length < count">
+        <a class="cursor-pointer text-primary" (click)="readMore()">Xem thêm</a>
+      </div>
     </ng-container>
     <ng-template #noHaveNoti>
       <span>Hiện tại không có thông báo!</span>

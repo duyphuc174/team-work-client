@@ -17,6 +17,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { NgbModule, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrModule } from 'ngx-toastr';
 
 const BASE_URL = new InjectionToken<string>('');
 
@@ -48,6 +49,7 @@ function appInitializer(authService: AuthService) {
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
     NgbModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     {

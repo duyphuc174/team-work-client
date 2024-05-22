@@ -1,9 +1,17 @@
 <app-header-title [breadcrumbTitles]="[{ name: 'Thông báo', routerLink: '' }]"></app-header-title>
 <div class="row">
   <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12">
-    <app-notification-list [notifications]="notifications$ | async"></app-notification-list>
+    <app-notification-list
+      [notifications]="notifications$ | async"
+      [count]="unReadCount$ | async"
+      (handleReadMore)="loadUnReadNotifications($event)"
+    ></app-notification-list>
   </div>
   <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12">
-    <app-notification-list [notifications]="readNotification$ | async"></app-notification-list>
+    <app-notification-list
+      [notifications]="readNotification$ | async"
+      [count]="readCount$ | async"
+      (handleReadMore)="loadReadNotifications($event)"
+    ></app-notification-list>
   </div>
 </div>

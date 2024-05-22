@@ -2,7 +2,7 @@
   <app-modal-header [title]="work?.id ? 'Chỉnh sửa công việc' : 'Thêm mới công việc'"></app-modal-header>
   <div class="card-body">
     <div class="mb-3">
-      <label for="title" class="form-label">Tên công việc</label>
+      <label for="title" class="form-label required">Tên công việc</label>
       <input
         formControlName="title"
         type="title"
@@ -14,7 +14,7 @@
     <div class="mb-3">
       <div class="row">
         <div class="col-6">
-          <label for="follower" class="form-label">Người theo dõi</label>
+          <label for="follower" class="form-label required">Người theo dõi</label>
           <ng-select
             formControlName="followerId"
             id="follower"
@@ -25,7 +25,7 @@
           ></ng-select>
         </div>
         <div class="col-6">
-          <label for="important" class="form-label">Mức độ quan trọng</label>
+          <label for="important" class="form-label required">Mức độ quan trọng</label>
           <ng-select
             id="important"
             formControlName="importantId"
@@ -47,6 +47,7 @@
             placeholder="Chọn ngày bắt đầu"
             class="form-control"
             type="text"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
             bsDatepicker
           />
         </div>
@@ -58,11 +59,18 @@
             placeholder="Chọn ngày kết thúc"
             class="form-control"
             type="text"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
             bsDatepicker
           />
         </div>
       </div>
     </div>
+    <ng-container *ngIf="work?.id">
+      <div class="mb-3">
+        <label for="description" class="form-label">Mô tả</label>
+        <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+      </div>
+    </ng-container>
   </div>
   <app-modal-footer
     [confirmText]="work?.id ? 'Chỉnh sửa' : 'Tạo mới'"

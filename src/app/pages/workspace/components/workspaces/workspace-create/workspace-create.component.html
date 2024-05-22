@@ -1,18 +1,23 @@
 <div class="card">
-  <app-modal-header [title]="workspace?.id ? 'Chỉnh sửa workspace' : 'Thêm mới workspace'"></app-modal-header>
+  <app-modal-header [title]="title"></app-modal-header>
   <div class="card-body">
     <form action="" [formGroup]="form">
       <div class="mb-3">
         <label for="workspaceName" class="form-label">Tên workspace</label>
         <input class="form-control" id="workspaceName" formControlName="name" placeholder="VD: CNTT6" />
       </div>
-      <div class="">
+      <div class="mb-3">
         <label for="workspaceDescription" class="form-label">Mô tả</label>
         <textarea class="form-control" id="workspaceDescription" formControlName="description" rows="2"></textarea>
+      </div>
+      <div class="" *ngIf="workspace?.id && isViewDetail">
+        <label for="" class="form-label">Người tạo nhóm</label>
+        <app-user-avatar-infor [user]="workspace.creator"></app-user-avatar-infor>
       </div>
     </form>
   </div>
   <app-modal-footer
+    *ngIf="isShowEdit"
     [confirmText]="workspace?.id ? 'Chỉnh sửa' : 'Tạo ngay'"
     [disabled]="form.invalid"
     (handleClick)="onSubmit()"

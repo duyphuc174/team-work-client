@@ -35,4 +35,8 @@ export class WorkHttpService {
   addFilesToWork(id: number, data: any): Observable<any> {
     return this.http.post<any>(`${API_WORK_URL}/${id}/files`, data);
   }
+
+  deleteFile(id: number, fileId: number): Observable<any> {
+    return this.http.delete<any>(`${API_WORK_URL}/${id}/files/${fileId}`);
+  }
 }
