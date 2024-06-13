@@ -17,7 +17,7 @@ import {
 import { AuthService } from 'src/app/modules/auth/_services/auth.service';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { WorkspaceService } from '../../../_services/workspace.service';
-import { MemberRoleEnum } from '../../../_models/workspace.model';
+import { MemberRoleEnum, WorkspaceModel } from '../../../_models/workspace.model';
 
 @Component({
   selector: 'app-workspace-sprint',
@@ -34,8 +34,9 @@ export class WorkspaceSprintComponent implements OnInit {
   worksSubject: BehaviorSubject<WorkModel[]> = new BehaviorSubject<WorkModel[]>([]);
   works$: Observable<WorkModel[]> = this.worksSubject.asObservable();
   userLogged: UserModel;
-  isAdmin: boolean;
-
+  // isAdmin: boolean;
+  currentWorkspace: WorkspaceModel;
+  memberRoleEnum = MemberRoleEnum;
   workStatusEnum = WorkStatusEnum;
   getImportantColor = getImportantColor;
   getWorkStatusName = getWorkStatusName;
@@ -52,13 +53,18 @@ export class WorkspaceSprintComponent implements OnInit {
     private workspaceService: WorkspaceService,
   ) {
     this.userLogged = this.authService.currentUserValue;
-    const members = this.workspaceService.currentWorksapceSubject.value.members;
-    const u = members.find((m) => m.user.id === this.userLogged.id);
-    if (u.role === MemberRoleEnum.ADMIN || u.role === MemberRoleEnum.CREATOR) {
-      this.isAdmin = true;
-    } else {
-      this.isAdmin = false;
-    }
+    // const members = this.workspaceService.currentWorksapceSubject.value.members;
+    // const u = members.find((m) => m.user.id === this.userLogged.id);
+    // if (u.role === MemberRoleEnum.ADMIN || u.role === MemberRoleEnum.CREATOR) {
+    //   this.isAdmin = true;
+    // } else {
+    //   this.isAdmin = false;
+    // }
+    this.workspaceService.currentWorkspace$.subscribe((workspace) => {
+      if (workspace?.id) {
+        this.currentWorkspace = workspace;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -70,6 +76,7 @@ export class WorkspaceSprintComponent implements OnInit {
     this.workService.getWorks(this.sprint.id, { ...this.search, ...this.params }).subscribe((works) => {
       if (works) {
         this.worksSubject.next(works);
+        console.log(works);
       }
       this.isLoadingSubject.next(false);
     });

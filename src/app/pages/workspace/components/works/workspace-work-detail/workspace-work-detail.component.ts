@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { WorkModel, WorkStatusEnum, getWorkStatusName } from '../../../_models/work.model';
+import { WorkModel, WorkStatusEnum, getImportantColor, getWorkStatusName } from '../../../_models/work.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkService } from '../../../_services/work.service';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/modules/auth/_services/auth.service';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { MemberRoleEnum } from '../../../_models/workspace.model';
 import { WorkspaceService } from '../../../_services/workspace.service';
+import { ModalConfirmDeleteComponent } from 'src/app/modules/partials/components/modal-confirm-delete/modal-confirm-delete.component';
 
 @Component({
   selector: 'app-workspace-work-detail',
@@ -24,6 +25,7 @@ export class WorkspaceWorkDetailComponent {
   work$: Observable<WorkModel> = this.workSubject.asObservable();
   workStatus = WorkStatusEnum;
   getWorkStatusName = getWorkStatusName;
+  getImportantColor = getImportantColor;
   tasksSubject: BehaviorSubject<TaskModel[]> = new BehaviorSubject<TaskModel[]>([]);
   tasks$: Observable<TaskModel[]> = this.tasksSubject.asObservable();
   userLogged: UserModel;
@@ -116,6 +118,26 @@ export class WorkspaceWorkDetailComponent {
     this.workService.deleteFile(this.workId, fileId).subscribe((res) => {
       if (res.success) {
         this.loadWork();
+      }
+    });
+  }
+
+  deleteWork() {
+    const initialState = {
+      idDelete: this.workId,
+      name: this.workSubject.value.title,
+    };
+    const bsModalRef = this.bsModalService.show(ModalConfirmDeleteComponent, {
+      initialState,
+    });
+
+    bsModalRef.content.onClose$.subscribe((res) => {
+      if (res) {
+        this.workService.deleteWork(this.workId).subscribe((res) => {
+          if (res.success) {
+            this.router.navigate([`/workspaces/${this.workspaceService.currentWorksapceSubject.value.id}/works`]);
+          }
+        });
       }
     });
   }

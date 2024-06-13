@@ -8,6 +8,7 @@ import { ModalConfirmDeleteComponent } from 'src/app/modules/partials/components
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { AuthService } from 'src/app/modules/auth/_services/auth.service';
 import { WorkspaceCreateComponent } from '../workspace-create/workspace-create.component';
+import { MemberService } from '../../../_services/member.service';
 
 @Component({
   selector: 'app-workspace-list',
@@ -28,6 +29,7 @@ export class WorkspaceListComponent implements OnInit {
     private router: Router,
     private bsModalService: BsModalService,
     private authService: AuthService,
+    private memberService: MemberService,
   ) {}
 
   ngOnInit(): void {
@@ -77,6 +79,14 @@ export class WorkspaceListComponent implements OnInit {
             this.loadData();
           }
         });
+      }
+    });
+  }
+
+  likeWorkspace(workspace: WorkspaceModel) {
+    this.memberService.updateWorkspaceAccess(workspace.id, { like: !workspace.myInfo.like }).subscribe((res) => {
+      if (res.success) {
+        this.loadData();
       }
     });
   }

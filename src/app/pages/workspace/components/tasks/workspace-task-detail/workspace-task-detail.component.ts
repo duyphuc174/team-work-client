@@ -13,6 +13,8 @@ import * as moment from 'moment';
 import { CommonService } from 'src/app/modules/partials/_services/common.service';
 import { FileStorageModel } from '../../../_models/work.model';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { ModalConfirmDeleteComponent } from 'src/app/modules/partials/components/modal-confirm-delete/modal-confirm-delete.component';
 
 @Component({
   selector: 'app-workspace-task-detail',
@@ -57,6 +59,7 @@ export class WorkspaceTaskDetailComponent implements OnInit {
     private commentService: CommentService,
     private commonService: CommonService,
     public offCanvas: NgbOffcanvas,
+    private bsModalService: BsModalService,
   ) {
     this.userLogged = this.authService.currentUserValue;
   }
@@ -124,6 +127,26 @@ export class WorkspaceTaskDetailComponent implements OnInit {
       if (res) {
         this.loadComments();
         this.control('commentContent').setValue('');
+      }
+    });
+  }
+
+  deleteComment(comment: CommentModel) {
+    const initialState = {
+      idDelete: comment.id,
+      name: comment.content,
+    };
+    const bsModalRef = this.bsModalService.show(ModalConfirmDeleteComponent, {
+      initialState,
+    });
+
+    bsModalRef.content.onClose$.subscribe((res) => {
+      if (res) {
+        this.commentService.deleteComment(res).subscribe((res) => {
+          if (res.success) {
+            this.loadComments();
+          }
+        });
       }
     });
   }

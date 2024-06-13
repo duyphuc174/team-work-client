@@ -43,7 +43,7 @@ export class InterceptService {
     return next.handle(authenticationRequest).pipe(
       tap((event) => {
         if (event instanceof HttpResponse && request.method !== 'GET') {
-          this.handleMessage.showSuccess('Thao tác thành công!');
+          // this.handleMessage.showSuccess('Thao tác thành công!');
         }
       }),
       catchError((err) => {

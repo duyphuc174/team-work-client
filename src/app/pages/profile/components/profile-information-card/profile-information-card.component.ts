@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { AuthService } from 'src/app/modules/auth/_services/auth.service';
 import { CommonService } from 'src/app/modules/partials/_services/common.service';
-import { UserService } from '../_services/user.service';
+import { UserService } from '../../_services/user.service';
 
 @Component({
   selector: 'app-profile-information-card',
@@ -11,17 +11,28 @@ import { UserService } from '../_services/user.service';
   styleUrls: ['./profile-information-card.component.scss'],
 })
 export class ProfileInformationCardComponent implements OnInit {
-  userLogger$: Observable<UserModel>;
+  @Input() user: UserModel;
+  isUserLoggedProfile: boolean = false;
+  // userLogger$: Observable<UserModel>;
   imgFile: File;
   imgPreviewSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
   imgPreview$: Observable<string> = this.imgPreviewSubject.asObservable();
 
-  constructor(private authService: AuthService, private commonService: CommonService, private userService: UserService) {
-    this.userLogger$ = this.authService.currentUser$;
-  }
+  constructor(
+    private authService: AuthService,
+    private commonService: CommonService,
+    private userService: UserService,
+  ) {}
 
   ngOnInit(): void {
-    this.imgPreviewSubject.next(this.authService.currentUserValue.avatar);
+    if (!this.user?.id) {
+      this.authService.currentUser$.subscribe((user) => {
+        this.user = user;
+      });
+      this.isUserLoggedProfile = true;
+    }
+
+    this.imgPreviewSubject.next(this.user.avatar);
   }
 
   readURL(event: Event | any) {
@@ -36,11 +47,11 @@ export class ProfileInformationCardComponent implements OnInit {
       this.commonService.upLoadFiles([this.imgFile]).subscribe((filePaths) => {
         const dataSubmit = {
           avatar: filePaths[0].path,
-        }
+        };
         this.userService.updateUser(dataSubmit).subscribe((res) => {
-            if(res) {
-              this.authService.currentUserSubject.next(res);
-            }
+          if (res) {
+            this.authService.currentUserSubject.next(res);
+          }
         });
       });
     }

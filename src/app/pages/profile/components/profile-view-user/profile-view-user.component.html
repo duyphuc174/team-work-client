@@ -1,0 +1,13 @@
+<app-header-title [breadcrumbTitles]="[{ name: 'Thông tin người dùng', routerLink: '' }]"></app-header-title>
+<div class="row">
+  <div class="col-xl-4 col-lg-5 col-md-12 col-sm-12" *ngIf="user">
+    <app-profile-information-card [user]="user"></app-profile-information-card>
+  </div>
+  <div class="col-xl-8 col-lg-7 col-md-12 col-sm-12">
+    <app-profile-common-workspaces [workspaces]="workspaces"></app-profile-common-workspaces>
+
+    <div class="mt-3" *ngIf="(currentWorkspace$ | async) && user">
+      <app-profile-user-activity [user]="user" [workspace]="currentWorkspace$ | async"></app-profile-user-activity>
+    </div>
+  </div>
+</div>

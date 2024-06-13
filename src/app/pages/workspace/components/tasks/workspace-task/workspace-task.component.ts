@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspaceService } from '../../../_services/workspace.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TaskModel, getTaskImportantColor, getTaskImportantName } from '../../../_models/task.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { TaskService } from '../../../_services/task.service';
 import { WorkspaceTaskDetailComponent } from '../workspace-task-detail/workspace-task-detail.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { ModalConfirmDeleteComponent } from 'src/app/modules/partials/components/modal-confirm-delete/modal-confirm-delete.component';
 
 class Work {
   id: number;
@@ -63,12 +65,18 @@ export class WorkspaceTaskComponent implements OnInit {
     private offCanvas: NgbOffcanvas,
     private taskService: TaskService,
     private fb: FormBuilder,
+    private router: Router,
+    private bsModalService: BsModalService,
   ) {
     this.activedRoute.params.subscribe((params: any) => {
       this.workspaceId = +params.id;
       if (this.workspaceId) {
         this.workspaceService.getWorkspaceById(this.workspaceId).subscribe((workspace) => {
-          this.loadData();
+          if (workspace?.id) {
+            this.loadData();
+          } else {
+            this.router.navigate(['/workspaces']);
+          }
         });
       }
     });
@@ -153,5 +161,24 @@ export class WorkspaceTaskComponent implements OnInit {
     console.log(this.params);
 
     this.loadData();
+  }
+
+  deleteTask(task: TaskModel) {
+    const initialState = {
+      idDelete: task.id,
+      name: task.title,
+    };
+    const bsModalRef = this.bsModalService.show(ModalConfirmDeleteComponent, {
+      initialState,
+    });
+    bsModalRef.content.onClose$.subscribe((res) => {
+      if (res) {
+        this.taskService.deleteTask(res).subscribe((res) => {
+          if (res?.status) {
+            this.loadData();
+          }
+        });
+      }
+    });
   }
 }

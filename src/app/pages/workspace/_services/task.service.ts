@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { TaskHttpService } from './task-http.service';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, finalize, map, of, tap } from 'rxjs';
 import { TaskModel } from '../_models/task.model';
+import { HandleHttpMessageServiceService } from 'src/app/modules/partials/_services/handle-http-message-service.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  constructor(private taskHttpService: TaskHttpService) {}
+  constructor(private taskHttpService: TaskHttpService, private handleMessage: HandleHttpMessageServiceService) {}
 
   getTasks(params?: any): Observable<TaskModel[]> {
     return this.taskHttpService.getTasks(params).pipe(
@@ -44,6 +45,9 @@ export class TaskService {
         t.setData(res);
         return t;
       }),
+      tap(() => {
+        this.handleMessage.showSuccess('Tạo mới thành công!');
+      }),
       catchError((err) => {
         return of(err);
       }),
@@ -55,6 +59,9 @@ export class TaskService {
       map((res) => {
         return res;
       }),
+      tap(() => {
+        this.handleMessage.showSuccess('Cập nhật thành công!');
+      }),
       catchError((err) => {
         return of(err);
       }),
@@ -65,6 +72,9 @@ export class TaskService {
     return this.taskHttpService.deleteTask(id).pipe(
       map((res) => {
         return res;
+      }),
+      tap(() => {
+        this.handleMessage.showSuccess('Xóa thành công!');
       }),
       catchError((err) => {
         console.log(err);
@@ -78,6 +88,9 @@ export class TaskService {
       map((res) => {
         return res;
       }),
+      tap(() => {
+        this.handleMessage.showSuccess('Thêm file thành công!');
+      }),
       catchError((err) => {
         console.log(err);
         return of(undefined);
@@ -89,6 +102,9 @@ export class TaskService {
     return this.taskHttpService.deleteFile(id, fileId).pipe(
       map((res) => {
         return res;
+      }),
+      tap(() => {
+        this.handleMessage.showSuccess('Xóa file thành công!');
       }),
       catchError((err) => {
         console.log(err);

@@ -1,10 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { AuthHttpService } from './auth-http.service';
-import { BehaviorSubject, Observable, Subscription, catchError, finalize, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, catchError, finalize, map, of, switchMap, tap } from 'rxjs';
 import { AuthModel } from '../_models/auth.model';
 import { environment } from 'src/environments/environment';
 import { UserModel, UserRegister } from '../_models/user.model';
 import { Router } from '@angular/router';
+import { HandleHttpMessageServiceService } from '../../partials/_services/handle-http-message-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,11 @@ export class AuthService implements OnDestroy {
     return this.currentUserSubject.value;
   }
 
-  constructor(private authHttpService: AuthHttpService, private router: Router) {
+  constructor(
+    private authHttpService: AuthHttpService,
+    private router: Router,
+    private handleMessage: HandleHttpMessageServiceService,
+  ) {
     const subcr = this.getUserByToken().subscribe();
     this.unsubcribe.push(subcr);
   }
@@ -50,10 +55,13 @@ export class AuthService implements OnDestroy {
         return this.setAuthFromLocalStorage(auth);
       }),
       switchMap(() => this.getUserByToken()),
+      tap(() => {
+        this.isLoadingSubject.next(false);
+        this.handleMessage.showSuccess('Đăng nhập thành công!');
+      }),
       catchError((err) => {
         return of(undefined);
       }),
-      finalize(() => this.isLoadingSubject.next(false)),
     );
   }
 
@@ -67,6 +75,7 @@ export class AuthService implements OnDestroy {
   changePassword(data: any): Observable<any> {
     return this.authHttpService.changePassword(data).pipe(
       map((res: any) => {
+        this.handleMessage.showSuccess('Đổi mật khẩu thành công!');
         return res;
       }),
       catchError((err) => {

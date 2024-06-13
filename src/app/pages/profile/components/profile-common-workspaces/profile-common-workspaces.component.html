@@ -1,0 +1,19 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="mb-4">Nhóm làm việc chung</h5>
+    <div>
+      <ng-container *ngIf="workspaces.length">
+        <ng-container *ngFor="let w of workspaces">
+          <div class="mb-3">
+            <div
+              (click)="goToWorkspace(w.id)"
+              class="p-3 rounded rounded-3 border d-flex align-items-center justify-content-between workspace-item-link"
+            >
+              <span>{{ w.name }}</span>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>

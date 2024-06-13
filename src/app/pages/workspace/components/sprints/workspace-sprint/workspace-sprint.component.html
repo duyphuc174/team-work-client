@@ -8,7 +8,11 @@
           <div type="button" class="btn btn-sm btn-secondary border-0" id="dropdownBasic1" ngbDropdownToggle>
             <i class="fa-solid fa-ellipsis fs-5"></i>
           </div>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <div
+            ngbDropdownMenu
+            aria-labelledby="dropdownBasic1"
+            *ngIf="currentWorkspace?.myInfo.role !== memberRoleEnum.MEMBER"
+          >
             <button ngbDropdownItem (click)="openEditSprintModal()">
               <div class="bg-hover-info-danger text-hover-info">
                 <i class="fa-regular fa-pen-to-square me-1"></i>Chỉnh sửa
@@ -30,7 +34,13 @@
         </div>
         <div class="d-flex flex-row align-items-center">
           <app-workspace-work-filter class="me-3" (onFilterChange)="filterChange($event)"></app-workspace-work-filter>
-          <button (click)="openWorkCreateModal()" class="btn btn-primary">Thêm công việc</button>
+          <button
+            [disabled]="currentWorkspace?.myInfo.role === memberRoleEnum.MEMBER"
+            (click)="openWorkCreateModal()"
+            class="btn btn-primary"
+          >
+            Thêm công việc
+          </button>
         </div>
       </div>
     </div>
@@ -39,11 +49,12 @@
         <tr>
           <th scope="col" class="pb-3 width-6">#</th>
           <th scope="col" class="pb-3 ps-0">Tên công việc</th>
-          <th scope="col" class="pb-3">Người theo dõi</th>
-          <th scope="col" class="pb-3">Thực hiện</th>
-          <th scope="col" class="pb-3">Độ quan trọng</th>
-          <th scope="col" class="pb-3">Trạng thái</th>
-          <th scope="col" class="pb-3 width-8"></th>
+          <th scope="col" class="pb-3 px-2">Người theo dõi</th>
+          <th scope="col" class="pb-3 px-2">Người thực hiện</th>
+          <th scope="col" class="pb-3 px-2">Thực hiện</th>
+          <th scope="col" class="pb-3 px-2">Độ quan trọng</th>
+          <th scope="col" class="pb-3 px-2">Trạng thái</th>
+          <th scope="col" class="pb-3 px-2 width-6"></th>
         </tr>
       </thead>
       <tbody>
@@ -56,26 +67,54 @@
               <td class="py-3 ps-0">
                 <span class="work-hight-light max-line-1" (click)="goToWorkDetail(work)">{{ work.title }}</span>
               </td>
-              <td>
-                <app-user-avatar-infor [user]="work.follower"></app-user-avatar-infor>
+              <td class="px-2">
+                <app-user-avatar-infor [user]="work.follower" [size]="6" [textSize]="'0.8rem'"></app-user-avatar-infor>
               </td>
-              <td>
+              <td class="px-2">
+                <ng-container *ngIf="!work.isPublic; else publicTpl">
+                  <div class="d-flex flex-row">
+                    <ng-container *ngIf="work.assignees.length">
+                      <ng-container *ngFor="let user of work.assignees; let i = index">
+                        <div class="me-2" *ngIf="i < 2">
+                          <app-user-avatar-infor
+                            [user]="user"
+                            [size]="6"
+                            [textSize]="'0.8rem'"
+                            [showName]="false"
+                          ></app-user-avatar-infor>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="work.assignees.length > 2">
+                        <div
+                          class="d-flex align-items-center justify-content-center rounded-circle bg-secondary width-6 height-6"
+                        >
+                          +{{ work.assignees.length - 2 }}
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </ng-container>
+                <ng-template #publicTpl>
+                  <span class="badge p-2 badge-primary">Mọi người</span>
+                </ng-template>
+              </td>
+              <td class="px-2">
                 <span class=""
                   >{{ work.startDate | date : 'dd/MM/yy' || 'dd/mm/yy' }} -
                   {{ work.endDate | date : 'dd/MM/yy' || 'dd/mm/yy' }}</span
                 >
               </td>
-              <td class="py-3">
+              <td class="py-3 px-2">
                 <span class="badge p-2 badge-{{ getImportantColor(work.important.level) }}">
                   {{ work.important.name }}</span
                 >
               </td>
-              <td class="py-3">
+              <td class="py-3 px-2">
                 <span class="p-2 badge badge-{{ getWorkStatusColor(work.status) }}">{{
                   getWorkStatusName(work.status)
                 }}</span>
               </td>
-              <td class="py-3 text-center">
+              <td class="py-3 text-center px-2">
                 <div ngbDropdown class="d-inline-block">
                   <div
                     type="button"
@@ -96,7 +135,11 @@
                     <button
                       ngbDropdownItem
                       (click)="openWorkCreateModal(work)"
-                      *ngIf="userLogged.id === work.follower.id || isAdmin"
+                      *ngIf="
+                        userLogged.id === work.follower.id ||
+                        currentWorkspace?.myInfo.role === memberRoleEnum.CREATOR ||
+                        currentWorkspace?.myInfo.role === memberRoleEnum.ADMIN
+                      "
                     >
                       <div class="bg-hover-light-warning text-hover-warning">
                         <i class="fa-solid fa-pen-to-square me-1"></i>Sửa thông tin
@@ -106,17 +149,25 @@
                     <button
                       ngbDropdownItem
                       (click)="openConfirmDeleteModal(work)"
-                      *ngIf="userLogged.id === work.follower.id || isAdmin"
+                      *ngIf="
+                        userLogged.id === work.follower.id ||
+                        currentWorkspace?.myInfo.role === memberRoleEnum.CREATOR ||
+                        currentWorkspace?.myInfo.role === memberRoleEnum.ADMIN
+                      "
                     >
                       <div class="bg-hover-light-danger text-hover-danger">
-                        <i class="fa-solid fa-trash me-1"></i>Xóa workspace
+                        <i class="fa-solid fa-trash me-1"></i>Xóa công việc
                       </div>
                     </button>
                     <!-- Cập nhật status -->
                     <button
                       ngbDropdownItem
                       (click)="updateStatusWork(work)"
-                      *ngIf="userLogged.id === work.follower.id || isAdmin"
+                      *ngIf="
+                        userLogged.id === work.follower.id ||
+                        currentWorkspace?.myInfo.role === memberRoleEnum.CREATOR ||
+                        currentWorkspace?.myInfo.role === memberRoleEnum.ADMIN
+                      "
                     >
                       <div class="bg-hover-light-danger text-hover-danger">
                         <i class="fa-solid fa-bars-progress me-1"></i>

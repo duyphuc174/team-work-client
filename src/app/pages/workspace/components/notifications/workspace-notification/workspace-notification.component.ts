@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { WorkspaceService } from '../../../_services/workspace.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NotificationModel } from 'src/app/pages/notification/_models/notification.model';
 
@@ -23,13 +23,21 @@ export class WorkspaceNotificationComponent {
 
   workspaceName: string;
 
-  constructor(private workspaceService: WorkspaceService, private activedRoute: ActivatedRoute) {
+  constructor(
+    private workspaceService: WorkspaceService,
+    private activedRoute: ActivatedRoute,
+    private router: Router,
+  ) {
     this.activedRoute.params.subscribe((params: any) => {
       const workspaceId = +params.id;
       if (workspaceId) {
         this.workspaceService.getWorkspaceById(workspaceId).subscribe((workspace) => {
-          this.workspaceName = workspace.name;
-          this.loadData();
+          if (workspace?.id) {
+            this.workspaceName = workspace.name;
+            this.loadData();
+          } else {
+            this.router.navigate(['/workspaces']);
+          }
         });
       }
     });

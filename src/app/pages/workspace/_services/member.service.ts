@@ -48,4 +48,16 @@ export class MemberService {
       }),
     );
   }
+
+  updateWorkspaceAccess(workspaceId: number, body: any): Observable<any> {
+    return this.memberHttpService.updateWorkspaceAccess(workspaceId, body).pipe(
+      map((res) => {
+        return res;
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of(undefined);
+      }),
+    );
+  }
 }

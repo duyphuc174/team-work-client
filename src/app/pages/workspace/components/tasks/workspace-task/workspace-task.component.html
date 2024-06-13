@@ -88,7 +88,9 @@
                 </td>
                 <td class="py-3">
                   <div class="d-flex flex-row align-items-center">
-                    <a class="text-danger cursor-pointer" tooltip="Xóa"><i class="fa-solid fa-trash fs-6"></i></a>
+                    <a (click)="deleteTask(task)" class="text-danger cursor-pointer" tooltip="Xóa"
+                      ><i class="fa-solid fa-trash fs-6"></i
+                    ></a>
                   </div>
                 </td>
               </tr>

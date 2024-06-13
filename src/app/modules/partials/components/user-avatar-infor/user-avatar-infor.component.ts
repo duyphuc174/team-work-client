@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 
 @Component({
@@ -11,6 +12,13 @@ export class UserAvatarInforComponent implements OnInit {
   @Input() showName: boolean = true;
   @Input() size: number = 8;
   @Input() showEmail: boolean = true;
+  @Input() textSize: string = '1rem';
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
+
+  goToProfile() {
+    this.router.navigate(['/profile', this.user.id]);
+  }
 }

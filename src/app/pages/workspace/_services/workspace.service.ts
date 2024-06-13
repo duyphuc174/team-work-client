@@ -18,6 +18,9 @@ export class WorkspaceService {
   currentWorksapceSubject: BehaviorSubject<WorkspaceModel> = new BehaviorSubject<WorkspaceModel>(null);
   currentWorkspace$: Observable<WorkspaceModel> = this.currentWorksapceSubject.asObservable();
 
+  unReadNotiCountSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  unReadNotiCount$: Observable<number> = this.unReadNotiCountSubject.asObservable();
+
   userLogged: UserModel;
   userLoggedRole: MemberRoleEnum;
 
@@ -184,6 +187,7 @@ export class WorkspaceService {
           noti.setData(notification);
           return noti;
         });
+        this.unReadNotiCountSubject.next(res.notiUnreadCount);
         return { notifications, readCount: res.notiReadCount, unReadCount: res.notiUnreadCount };
       }),
       catchError((err) => {

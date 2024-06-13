@@ -6,7 +6,13 @@
         <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
           <div class="mb-3">
             <label for="firstName" class="form-label">Họ</label>
-            <input type="text" formControlName="firstName" class="form-control" id="firstName" placeholder="VD: Nguyễn Duy" />
+            <input
+              type="text"
+              formControlName="firstName"
+              class="form-control"
+              id="firstName"
+              placeholder="VD: Nguyễn Duy"
+            />
           </div>
         </div>
         <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
@@ -14,25 +20,45 @@
             <label for="lastName" class="form-label">Tên</label>
             <input type="text" formControlName="lastName" class="form-control" id="lastName" placeholder="VD: Phúc" />
           </div>
-        </div>        
+        </div>
       </div>
       <div class="row">
         <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
           <div class="mb-3">
             <label for="phoneNumber" class="form-label">Số điện thoại</label>
-            <input type="text" formControlName="phone" class="form-control" id="phoneNumber" placeholder="VD: 0123456789" />
+            <input
+              type="text"
+              formControlName="phone"
+              class="form-control"
+              id="phoneNumber"
+              placeholder="VD: 0123456789"
+            />
           </div>
         </div>
         <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
           <div class="mb-3">
             <label for="birthday" class="form-label">Sinh nhật</label>
-            <input type="text" formControlName="birthday" class="form-control" bsDatepicker id="birthday" placeholder="VD: 17/07/2002" />
+            <input
+              type="text"
+              formControlName="birthday"
+              class="form-control"
+              bsDatepicker
+              id="birthday"
+              placeholder="VD: 17/07/2002"
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+            />
           </div>
         </div>
       </div>
       <div class="mb-3">
         <label for="address" class="form-label">Địa chỉ</label>
-        <input type="text" formControlName="address" class="form-control" id="address" placeholder="VD: 123 ABC Street" />
+        <input
+          type="text"
+          formControlName="address"
+          class="form-control"
+          id="address"
+          placeholder="VD: 123 ABC Street"
+        />
       </div>
       <div class="text-end">
         <button class="btn btn-primary px-5" type="submit">Cập nhật</button>

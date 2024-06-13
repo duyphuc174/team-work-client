@@ -1,14 +1,15 @@
 <ng-container *ngIf="user.id">
   <div class="d-flex align-items-center">
     <img
+      (click)="goToProfile()"
       class="rounded-circle width-{{ size }} height-{{ size }}"
       src="{{ user.avatar }}"
       alt=""
-      tooltip="{{ user.fullName }}"
+      tooltip="{{ user.email }}"
     />
     <div class="d-flex flex-column ms-2" *ngIf="showName">
-      <h6 class="mb-0">{{ user.fullName }}</h6>
-      <span *ngIf="showEmail">{{ user.email }}</span>
+      <h6 class="mb-0" [style.font-size]="textSize">{{ user.fullName }}</h6>
+      <span *ngIf="showEmail" [style.font-size]="textSize" s>{{ user.email }}</span>
     </div>
   </div>
 </ng-container>

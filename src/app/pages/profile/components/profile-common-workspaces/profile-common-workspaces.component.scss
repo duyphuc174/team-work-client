@@ -1,0 +1,8 @@
+.workspace-item-link {
+  &:hover {
+    color: var(--mdb-primary) !important;
+    background-color: var(--mdb-gray-200) !important;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

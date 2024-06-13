@@ -1,7 +1,18 @@
-.workspace-item-link {
-  &:hover {
-    color: var(--mdb-primary) !important;
-    text-decoration: underline;
+.workspace-item {
+  &-link {
+    &:hover {
+      color: var(--mdb-primary) !important;
+      text-decoration: underline;
+    }
+    &:hover .workspace-item-link-star {
+      display: block;
+    }
+  }
+  &-star {
+    display: none;
+  }
+  &:hover .workspace-item-star {
+    display: block;
   }
 }
 

@@ -9,8 +9,10 @@
 /* Importing ng-select SCSS file. */
 @import '~@ng-select/ng-select/themes/default.theme.css';
 
-// @import './assets/scss/style.scss';
-@import '~mdb-ui-kit/css/mdb.min.css';
+
+// @import './assets/scss/custom/variables';
+@import 'node_modules/mdb-ui-kit/src/scss/mdb.free.scss';
+
 
 @import './assets/scss/custom-class.scss';
 

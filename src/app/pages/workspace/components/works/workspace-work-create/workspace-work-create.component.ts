@@ -52,9 +52,7 @@ export class WorkspaceWorkCreateComponent implements OnInit {
   ngOnInit(): void {
     this.userLogged = this.auth.currentUserValue;
     this.loadData();
-    this.importants$.subscribe((importants) => {
-      console.log(importants);
-    });
+    this.importants$.subscribe((importants) => {});
     this.initForm();
   }
 
@@ -88,6 +86,7 @@ export class WorkspaceWorkCreateComponent implements OnInit {
   }
 
   initForm() {
+    const assigneeIds = this.work?.assignees.map((assignee) => assignee.id) || [];
     this.form = this.fb.group({
       title: [this.work?.title || '', [Validators.required]],
       description: [this.work?.description || ''],
@@ -95,6 +94,8 @@ export class WorkspaceWorkCreateComponent implements OnInit {
       followerId: [this.work?.follower?.id || this.userLogged.id, [Validators.required]],
       startDate: [this.work?.startDate || null],
       endDate: [this.work?.endDate || null],
+      isPublic: [typeof this.work?.isPublic === 'boolean' ? this.work?.isPublic : true, [Validators.required]],
+      assigneeIds: [assigneeIds || null],
     });
   }
 

@@ -11,11 +11,7 @@
         <input type="text" class="form-control" placeholder="Tìm kiếm" (input)="loadMembers($event)" />
       </div>
       <div *ngIf="currentUserRole === memberRole.ADMIN || currentUserRole === memberRole.CREATOR">
-        <button
-          class="btn btn-light btn-danger me-3"
-          *ngIf="selectedMemberIds.length"
-          (click)="deleteMuiltipleMembers()"
-        >
+        <button class="btn btn-danger me-3" *ngIf="selectedMemberIds.length" (click)="deleteMuiltipleMembers()">
           Xóa đã chọn
         </button>
         <button class="btn btn-secondary" (click)="openSelectUsers()">
@@ -73,7 +69,7 @@
                     <i class="fa-solid fa-ellipsis fs-5"></i>
                   </div>
                   <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                    <button ngbDropdownItem>
+                    <button ngbDropdownItem (click)="viewDetailMember(member)">
                       <div class="bg-hover-info-danger text-hover-info">
                         <i class="fa-regular fa-eye me-1"></i>
                         Xem chi tiết

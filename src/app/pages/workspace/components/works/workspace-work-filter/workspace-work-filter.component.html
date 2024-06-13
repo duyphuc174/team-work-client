@@ -1,28 +1,66 @@
-<div class="d-flex flex-row">
-  <div class="me-3">
-    <button class="btn btn-secondary" (click)="clearFilter()">Xóa bộ lọc</button>
+<div ngbDropdown class="d-inline-block">
+  <button type="button" class="btn btn-secondary" id="dropdownBasic1" ngbDropdownToggle>
+    <i class="fa-solid fa-filter me-2"></i>Bộ lọc
+  </button>
+  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+    <div style="min-width: 400px">
+      <div class="p-3 d-flex flex-column">
+        <div class="d-flex flex-row align-items-center justify-content-between pb-2 mb-2 border-bottom">
+          <span>Lọc công việc</span>
+          <button class="btn btn-sm btn-secondary" (click)="clearFilter()">Xóa bộ lọc</button>
+        </div>
+        <div class="">
+          <div class="form-group">
+            <label for="" class="form-label">Người thực hiện</label>
+            <ng-select
+              style="min-width: 200px"
+              [items]="members"
+              bindLabel="fullName"
+              bindValue="id"
+              placeholder="Người thực hiện"
+              [clearable]="true"
+              class="mb-3"
+              (change)="filterChange()"
+              (clear)="filterChange()"
+              [(ngModel)]="assigneeIdSelected"
+            ></ng-select>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <div class="form-group">
+                <label for="" class="form-label">Độ quan trọng</label>
+                <ng-select
+                  style="min-width: 150px"
+                  [items]="listSortBy"
+                  bindValue="value"
+                  bindLabel="label"
+                  [clearable]="true"
+                  placeholder="Sắp xếp theo"
+                  (change)="filterChange()"
+                  (clear)="filterChange()"
+                  [(ngModel)]="sortBySelected"
+                ></ng-select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="" class="form-label">Kiểu sắp xếp</label>
+                <ng-select
+                  style="min-width: 150px"
+                  [items]="listSortType"
+                  bindValue="value"
+                  bindLabel="label"
+                  [clearable]="true"
+                  placeholder="Kiểu sắp xếp"
+                  (change)="filterChange()"
+                  (clear)="filterChange()"
+                  [(ngModel)]="sortTypeSelected"
+                ></ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <ng-select
-    style="min-width: 150px"
-    [items]="listSortBy"
-    bindValue="value"
-    bindLabel="label"
-    [clearable]="true"
-    placeholder="Sắp xếp theo"
-    class="me-3"
-    (change)="filterChange()"
-    (clear)="filterChange()"
-    [(ngModel)]="sortBySelected"
-  ></ng-select>
-  <ng-select
-    style="min-width: 150px"
-    [items]="listSortType"
-    bindValue="value"
-    bindLabel="label"
-    [clearable]="true"
-    placeholder="Kiểu sắp xếp"
-    (change)="filterChange()"
-    (clear)="filterChange()"
-    [(ngModel)]="sortTypeSelected"
-  ></ng-select>
 </div>

@@ -131,6 +131,7 @@
                 <div class="d-flex flex-row align-items-center">
                   <div class="flex-grow-1 me-3">
                     <input
+                      (keydown.enter)="sendComment()"
                       id="commentContent"
                       type="text"
                       class="form-control"
@@ -159,7 +160,9 @@
                             </div>
                             <p class="mb-0 fs-7 text-muted">{{ comment.content }}</p>
                             <div class="mt-2 text-end">
-                              <span class="text-primary cursor-pointer fs-7 me-2">Xóa</span>
+                              <span class="text-primary cursor-pointer fs-7 me-2" (click)="deleteComment(comment)"
+                                >Xóa</span
+                              >
                               <label for="commentContent" class="cursor-pointer fs-7 text-primary">Trả lời</label>
                             </div>
                           </div>

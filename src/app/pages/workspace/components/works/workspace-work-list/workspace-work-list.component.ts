@@ -6,6 +6,7 @@ import { SprintService } from '../../../_services/sprint.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { WorkspaceSprintCreateComponent } from '../../sprints/workspace-sprint-create/workspace-sprint-create.component';
 import { ModalConfirmDeleteComponent } from 'src/app/modules/partials/components/modal-confirm-delete/modal-confirm-delete.component';
+import { MemberRoleEnum, WorkspaceModel } from '../../../_models/workspace.model';
 
 @Component({
   selector: 'app-workspace-work-list',
@@ -15,6 +16,8 @@ import { ModalConfirmDeleteComponent } from 'src/app/modules/partials/components
 export class WorkspaceWorkListComponent implements OnInit {
   sprintsSubject: BehaviorSubject<SprintModel[]> = new BehaviorSubject<SprintModel[]>([]);
   sprints$: Observable<SprintModel[]> = this.sprintsSubject.asObservable();
+  currentWorkspace: WorkspaceModel;
+  memberRoleEnum = MemberRoleEnum;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -22,8 +25,10 @@ export class WorkspaceWorkListComponent implements OnInit {
     private bsModalService: BsModalService,
   ) {
     this.workspaceService.currentWorkspace$.subscribe((workspace) => {
-      if (workspace) {
+      if (workspace?.id) {
         this.loadData();
+        this.currentWorkspace = workspace;
+        console.log(this.currentWorkspace.myInfo);
       }
     });
   }

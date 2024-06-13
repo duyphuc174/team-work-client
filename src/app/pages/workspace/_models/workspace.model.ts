@@ -6,6 +6,7 @@ export class WorkspaceModel {
   description: string;
   creator: UserModel;
   members: MemberModel[];
+  myInfo: MemberModel;
 
   setData(data) {
     this.id = data.id;
@@ -23,6 +24,10 @@ export class WorkspaceModel {
         this.members.push(m);
       });
     }
+    if (data?.myInfo) {
+      this.myInfo = new MemberModel();
+      this.myInfo.setData(data.myInfo);
+    }
   }
 }
 
@@ -31,6 +36,8 @@ export class MemberModel {
   role: MemberRoleEnum;
   user: UserModel;
   roleName: string;
+  like: boolean;
+  accessTime: Date;
   setData(data: any) {
     this.id = data.id;
     this.role = data.role;
@@ -39,6 +46,8 @@ export class MemberModel {
       this.user.setData(data.user);
     }
     this.roleName = getMemberRoleName(this.role);
+    this.like = data.like;
+    this.accessTime = data?.accessTime ? new Date(data.accessTime) : null;
   }
 }
 

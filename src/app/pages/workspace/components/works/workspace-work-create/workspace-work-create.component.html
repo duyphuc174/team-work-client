@@ -16,6 +16,7 @@
         <div class="col-6">
           <label for="follower" class="form-label required">Người theo dõi</label>
           <ng-select
+            placeholder="Chọn người theo dõi"
             formControlName="followerId"
             id="follower"
             [items]="followers"
@@ -64,6 +65,46 @@
           />
         </div>
       </div>
+    </div>
+    <div class="">
+      <label for="title" class="form-label required">Người thực hiện</label>
+      <div class="d-flex flex-row mb-2">
+        <div>
+          <input
+            type="radio"
+            class="form-check-input"
+            name="isPublic"
+            id="assigneesPublic"
+            [value]="true"
+            formControlName="isPublic"
+          />
+          <label class="form-check-label" for="assigneesPublic">Tất cả</label>
+        </div>
+        <div class="ms-3">
+          <input
+            type="radio"
+            class="form-check-input"
+            name="isPublic"
+            id="assigneesPrivate"
+            [value]="false"
+            formControlName="isPublic"
+          />
+          <label class="form-check-label" for="assigneesPrivate">Chọn người thực hiện</label>
+        </div>
+      </div>
+      <ng-container *ngIf="!controls('isPublic').value">
+        <ng-select
+          class="mt-2"
+          placeholder="Chọn người thực hiện"
+          id="assignees"
+          [items]="followers"
+          bindValue="id"
+          bindLabel="fullName"
+          [clearable]="false"
+          [multiple]="true"
+          formControlName="assigneeIds"
+        ></ng-select>
+      </ng-container>
     </div>
     <ng-container *ngIf="work?.id">
       <div class="mb-3">

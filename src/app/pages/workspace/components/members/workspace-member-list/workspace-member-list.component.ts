@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkspaceService } from '../../../_services/workspace.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
   MemberModel,
@@ -44,6 +44,7 @@ export class WorkspaceMemberListComponent implements OnInit {
     private bsModalService: BsModalService,
     private authService: AuthService,
     private memberService: MemberService,
+    private router: Router,
   ) {
     this.userLogged = this.authService.currentUserValue;
     this.activedRoute.params.subscribe((params: any) => {
@@ -59,13 +60,15 @@ export class WorkspaceMemberListComponent implements OnInit {
   loadData() {
     this.isLoadingSubject.next(true);
     this.workspaceService.getWorkspaceById(this.workspaceId).subscribe((workspace) => {
-      if (workspace) {
+      if (workspace.id) {
         const members = workspace.members;
         this.membersSubject.next(members);
         const m = members.find((m) => m.user.id === this.userLogged.id);
         if (m) {
           this.currentUserRole = m.role;
         }
+      } else {
+        this.router.navigate(['/workspaces']);
       }
       this.isLoadingSubject.next(false);
     });
@@ -132,5 +135,9 @@ export class WorkspaceMemberListComponent implements OnInit {
         this.loadData();
       }
     });
+  }
+
+  viewDetailMember(member: MemberModel) {
+    this.router.navigate(['/profile', member.user.id], { queryParams: { workspaceId: this.workspaceId } });
   }
 }

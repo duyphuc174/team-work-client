@@ -1,6 +1,6 @@
 <app-header-title
-  [breadcrumbTitles]="[{ name: 'Workspace', routerLink: '' }]"
-  [buttonName]="'Thêm mới'"
+  [breadcrumbTitles]="[{ name: 'Danh sách nhóm làm việc', routerLink: '' }]"
+  [buttonName]="'Tạo nhóm mới'"
   (handleClick)="openWorkspaceCreateModal()"
 ></app-header-title>
 
@@ -12,13 +12,13 @@
           <th scope="col" class="width-8 pb-3">#</th>
           <th scope="col" class="pb-3">Tên workspace</th>
           <th scope="col" class="pb-3">Người tạo</th>
-          <th scope="col" class="width-8 pb-3"></th>
+          <th scope="col" class="pb-3" style="min-width: 200px"></th>
         </tr>
       </thead>
       <tbody>
         <ng-container *ngIf="workspaces$ | async as workspaces">
           <ng-container *ngFor="let workspace of workspaces; index as i">
-            <tr class="">
+            <tr class="workspace-item">
               <th class="py-3">
                 <div class="d-flex align-items-center">
                   <span>{{ i + 1 }}</span>
@@ -33,39 +33,48 @@
                 <app-user-avatar-infor [user]="workspace.creator"></app-user-avatar-infor>
               </td>
               <td class="py-3 text-end">
-                <div ngbDropdown class="d-inline-block">
+                <div class="d-flex flex-row align-items-center justify-content-end">
                   <div
-                    type="button"
-                    class="btn btn-sm btn-outline-secondary border-0"
-                    id="dropdownBasic1"
-                    ngbDropdownToggle
+                    class="me-3 {{ workspace.myInfo.like ? '' : 'workspace-item-star' }}"
+                    (click)="likeWorkspace(workspace); $event.stopPropagation()"
                   >
-                    <i class="fa-solid fa-ellipsis fs-5"></i>
+                    <i *ngIf="!workspace.myInfo.like" class="fa-regular fa-star text-secondary"></i>
+                    <i *ngIf="workspace.myInfo.like" class="fa-solid fa-star text-warning"></i>
                   </div>
-                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                    <button ngbDropdownItem (click)="goToWorkspace(workspace.id)">
-                      <div class="bg-hover-info-danger text-hover-info">
-                        <i class="fa-regular fa-eye me-1"></i>Xem chi tiết
-                      </div>
-                    </button>
-                    <button
-                      ngbDropdownItem
-                      (click)="openWorkspaceCreateModal(workspace)"
-                      *ngIf="userLogged.id === workspace.creator.id"
+                  <div ngbDropdown class="d-inline-block">
+                    <div
+                      type="button"
+                      class="btn btn-sm btn-outline-secondary border-0"
+                      id="dropdownBasic1"
+                      ngbDropdownToggle
                     >
-                      <div class="bg-hover-light-warning text-hover-warning">
-                        <i class="fa-solid fa-pen-to-square me-1"></i>Sửa thông tin
-                      </div>
-                    </button>
-                    <button
-                      ngbDropdownItem
-                      (click)="openModalConfirmDelete(workspace)"
-                      *ngIf="userLogged.id === workspace.creator.id"
-                    >
-                      <div class="bg-hover-light-danger text-hover-danger">
-                        <i class="fa-solid fa-trash me-1"></i>Xóa workspace
-                      </div>
-                    </button>
+                      <i class="fa-solid fa-ellipsis fs-5"></i>
+                    </div>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                      <button ngbDropdownItem (click)="goToWorkspace(workspace.id)">
+                        <div class="bg-hover-info-danger text-hover-info">
+                          <i class="fa-regular fa-eye me-1"></i>Xem chi tiết
+                        </div>
+                      </button>
+                      <button
+                        ngbDropdownItem
+                        (click)="openWorkspaceCreateModal(workspace)"
+                        *ngIf="userLogged.id === workspace.creator.id"
+                      >
+                        <div class="bg-hover-light-warning text-hover-warning">
+                          <i class="fa-solid fa-pen-to-square me-1"></i>Sửa thông tin
+                        </div>
+                      </button>
+                      <button
+                        ngbDropdownItem
+                        (click)="openModalConfirmDelete(workspace)"
+                        *ngIf="userLogged.id === workspace.creator.id"
+                      >
+                        <div class="bg-hover-light-danger text-hover-danger">
+                          <i class="fa-solid fa-trash me-1"></i>Xóa nhóm
+                        </div>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </td>

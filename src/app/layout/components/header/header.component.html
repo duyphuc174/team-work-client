@@ -1,37 +1,7 @@
-<!-- <header class="px-3 py-2 border-bottom bg-white position-fixed top-0 start-0 end-0" style="z-index: 1000">
-  <div class="">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <a routerLink="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-        <div class="width-6 height-6">
-          <img src="../../../../assets/media/logo/logo.png" class="w-100 h-100" alt="" />
-        </div>
-        <span class="ms-2 fs-5 text-primary fw-medium">Team work</span>
-      </a>
-
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Team</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Projects</a>
-        </li>
-      </ul>
-
-      <div class="text-end">
-        <app-user-menu></app-user-menu>
-      </div>
-    </div>
-  </div>
-</header>
- -->
-
 <!-- Navbar -->
 <nav
-  class="navbar navbar-expand-lg navbar-light bg-body-tertiary position-fixed top-0 start-0 end-0"
-  style="z-index: 999"
+  class="navbar navbar-expand-lg navbar-light bg-body-tertiary position-fixed top-0 start-0 end-0 border-bottom"
+  style="z-index: 999; box-shadow: none"
 >
   <!-- Container wrapper -->
   <div class="container-fluid">
@@ -48,30 +18,109 @@
       <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Collapsible wrapper -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0" href="#">
+      <a class="navbar-brand mb-1 mt-lg-0 me-0" href="#">
         <img src="../../../../assets/media/logo/logo.png" height="25" alt="Logo" loading="lazy" />
-        <!-- <span class="text-primary fw-medium">Team work</span> -->
       </a>
-      <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/workspace/list" routerLinkActive="active">Không gian làm việc</a>
+          <a class="nav-link header-link rounded" routerLink="/workspace/list" routerLinkActive="active"
+            >Các nhóm làm việc</a
+          >
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Team</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Projects</a>
-        </li>
-      </ul>
-      <!-- Left links -->
-    </div>
-    <!-- Collapsible wrapper -->
 
-    <!-- Right elements -->
+        <li class="nav-item">
+          <div ngbDropdown class="d-inline-block" #myDrop="ngbDropdown">
+            <div ngbDropdownToggle>
+              <a class="nav-link header-link rounded" style="cursor: default"
+                >Nhóm truy cập gần đây <i class="fa-solid fa-chevron-down fw-medium"></i
+              ></a>
+            </div>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <div class="p-2" style="min-width: 300px">
+                <ng-container *ngIf="workspaces$ | async as workspaces">
+                  <ng-container *ngIf="workspaces.length; else noLikeTpl">
+                    <ng-container *ngFor="let w of workspaces">
+                      <div class="p-2 workspace-item-link rounded header-link-item" (click)="goToWorkspace(w.id)">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <div>
+                            <span class="fw-medium fs-6">{{ w.name }}</span>
+                            <app-user-avatar-infor
+                              [user]="w.creator"
+                              [size]="4"
+                              [showEmail]="false"
+                              [textSize]="'0.9rem'"
+                            ></app-user-avatar-infor>
+                          </div>
+                          <div
+                            class="{{ w.myInfo.like ? '' : 'header-link-item-star' }}"
+                            (click)="likeWorkspace(w); $event.stopPropagation()"
+                          >
+                            <i *ngIf="!w.myInfo.like" class="fa-regular fa-star text-secondary"></i>
+                            <i *ngIf="w.myInfo.like" class="fa-solid fa-star text-warning"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <div ngbDropdown class="d-inline-block" #myDrop="ngbDropdown">
+            <div ngbDropdownToggle>
+              <a class="nav-link header-link rounded" style="cursor: default"
+                >Đã thích<i class="fa-solid fa-chevron-down fw-medium"></i
+              ></a>
+            </div>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <div class="p-2" style="min-width: 300px">
+                <ng-container *ngIf="likeWorkspaces$ | async as workspaces">
+                  <ng-container *ngIf="workspaces.length; else noLikeTpl">
+                    <ng-container *ngFor="let w of workspaces">
+                      <div
+                        class="p-2 workspace-item-link rounded header-link-item"
+                        (click)="goToWorkspace(w.id)"
+                        *ngIf="w.myInfo.like"
+                      >
+                        <div class="d-flex align-items-center justify-content-between">
+                          <div>
+                            <span class="fw-medium fs-6">{{ w.name }}</span>
+                            <app-user-avatar-infor
+                              [user]="w.creator"
+                              [size]="4"
+                              [showEmail]="false"
+                              [textSize]="'0.9rem'"
+                            ></app-user-avatar-infor>
+                          </div>
+                          <div
+                            class="{{ w.myInfo.like ? '' : 'header-link-item-star' }}"
+                            (click)="likeWorkspace(w); $event.stopPropagation()"
+                          >
+                            <i *ngIf="!w.myInfo.like" class="fa-regular fa-star text-secondary"></i>
+                            <i *ngIf="w.myInfo.like" class="fa-solid fa-star text-warning"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+                <ng-template #noLikeTpl>
+                  <div class="p-2">
+                    <span>Không có nhóm nào!</span>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <button class="btn btn-secondary ms-2" (click)="openWorkspaceCreateModal()">Thêm mới</button>
+      </ul>
+    </div>
     <div class="d-flex align-items-center">
       <!-- Notifications -->
       <div class="mt-2 me-1">
@@ -81,7 +130,6 @@
       <!-- Avatar -->
       <app-user-menu></app-user-menu>
     </div>
-    <!-- Right elements -->
   </div>
   <!-- Container wrapper -->
 </nav>

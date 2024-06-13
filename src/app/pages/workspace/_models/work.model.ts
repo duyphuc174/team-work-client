@@ -18,6 +18,9 @@ export class WorkModel {
   tasksCount?: number;
   tasksCompletedCount?: number;
   progress: number;
+  assignees: UserModel[] = [];
+  isPublic: boolean;
+
   setData(data) {
     this.id = data.id;
     this.title = data.title;
@@ -54,6 +57,16 @@ export class WorkModel {
         this.tasks.push(t);
       });
     }
+
+    if (data?.assignees?.length) {
+      data.assignees.map((assignee) => {
+        const user = new UserModel();
+        user.setData(assignee?.user);
+        this.assignees.push(user);
+      });
+    }
+
+    this.isPublic = this.assignees.length ? false : true;
 
     this.tasksCount = data?.tasksCount || 0;
     this.tasksCompletedCount = data?.tasksCompletedCount || 0;

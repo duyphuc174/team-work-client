@@ -1,15 +1,23 @@
-<div class="card" *ngIf="userLogger$ | async as user">
+<div class="card" *ngIf="user?.id">
   <div class="card-body p-4">
     <div class="border-bottom">
       <div class="d-flex flex-column align-items-center">
-        <div class="text-center mb-3 rounded-circle border border-4 position-relative" style="width: 120px; height: 120px;">
-          <img class="rounded-circle w-100 h-100" [src]="imgPreview$ | async" alt="" style="background-size: contain;">
-          <label for="avatar-change" class="position-absolute bottom-0 end-0 cursor-pointer" tooltip="Thay ảnh đại diện">
-            <div class=" rounded-circle border border-3 bg-white p-1 d-flex align-items-center">
+        <div
+          class="text-center mb-3 rounded-circle border border-4 position-relative"
+          style="width: 120px; height: 120px"
+        >
+          <img class="rounded-circle w-100 h-100" [src]="imgPreview$ | async" alt="" style="background-size: contain" />
+          <label
+            *ngIf="isUserLoggedProfile"
+            for="avatar-change"
+            class="position-absolute bottom-0 end-0 cursor-pointer"
+            tooltip="Thay ảnh đại diện"
+          >
+            <div class="rounded-circle border border-3 bg-white p-1 d-flex align-items-center">
               <i class="fa-solid fa-camera text-secondary"></i>
             </div>
           </label>
-          <input id="avatar-change" (change)="readURL($event)" type="file" accept=".png, .jpg, .jpeg" hidden>
+          <input id="avatar-change" (change)="readURL($event)" type="file" accept=".png, .jpg, .jpeg" hidden />
         </div>
         <div class="mb-3 text-center">
           <h4 class="mb-0">{{ user.fullName }}</h4>
@@ -28,7 +36,7 @@
       </div>
       <div class="d-flex align-items-center justify-content-between mb-3">
         <span class="fw-bold">Sinh nhật</span>
-        <span>{{ user.birthday | date: 'dd/MM/yyyy' }}</span>
+        <span>{{ user.birthday | date : 'dd/MM/yyyy' }}</span>
       </div>
       <div class="d-flex align-items-center justify-content-between mb-3">
         <span class="fw-bold">Địa chỉ</span>

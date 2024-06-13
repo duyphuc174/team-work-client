@@ -23,4 +23,8 @@ export class MemberHttpService {
   deleteMembers(data): Observable<any> {
     return this.http.post<any>(`${API_MEMBER_URL}/delete/muiltiple`, data);
   }
+
+  updateWorkspaceAccess(workspaceId: number, body: any): Observable<any> {
+    return this.http.post<any>(`${API_MEMBER_URL}/workspace/${workspaceId}/access`, body);
+  }
 }

@@ -1,15 +1,21 @@
 <app-header-title
-  [title]="'Chi tiết công việc'"
+  [breadcrumbTitles]="[{ name: 'Chi tiết công việc', routerLink: '' }]"
   [buttonName]="'Chỉnh sửa'"
   (handleClick)="openWorkCreateModal()"
   [buttonDelete]="'Xóa'"
+  (handleDelete)="deleteWork()"
 ></app-header-title>
 <div class="card">
   <ng-container *ngIf="work$ | async as work">
     <div class="card-header">
       <div class="py-2">
         <div class="d-flex flex-row justify-content-between mb-2">
-          <h5 class="mb-0">{{ work.title }}</h5>
+          <h5 class="mb-0">
+            {{ work.title }}
+            <span class="badge p-2 fs-6 ms-2 badge-{{ getImportantColor(work.important.level) }}">
+              {{ work.important.name }}</span
+            >
+          </h5>
           <span>Chu kỳ: {{ work.sprint?.name }}</span>
         </div>
         <div>
@@ -43,7 +49,7 @@
         <div class="d-flex flex-row align-items-start justify-content-between">
           <div class="d-flex flex-column">
             <span class="fw-medium mb-1">Người theo dõi:</span>
-            <app-user-avatar-infor [user]="work.follower" [size]="5" [showEmail]="false"></app-user-avatar-infor>
+            <app-user-avatar-infor [user]="work.follower" [size]="6" [textSize]="'0.8rem'"></app-user-avatar-infor>
           </div>
           <div class="d-flex flex-row">
             <div class="me-3">
@@ -79,9 +85,30 @@
         </div>
       </div>
       <div class="mb-3">
+        <div class="d-flex flex-column">
+          <span class="fw-medium mb-1">Người thực hiện:</span>
+          <ng-container *ngIf="!work.isPublic; else publicTpl">
+            <div class="d-flex flex-row">
+              <ng-container *ngIf="work.assignees.length">
+                <ng-container *ngFor="let user of work.assignees">
+                  <div class="me-2">
+                    <app-user-avatar-infor [user]="user" [size]="6" [textSize]="'0.8rem'"></app-user-avatar-infor>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </div>
+          </ng-container>
+          <ng-template #publicTpl>
+            <div>
+              <span class="badge p-2 badge-primary">Mọi người</span>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="mb-3">
         <div class="d-flex flex-row align-items-center justify-content-between mb-3">
           <div class="d-flex flex-row align-items-center">
-            <div>
+            <div class="d-flex flex-column">
               <span class="fw-medium">Thời gian:</span>
               <span class="text-muted">
                 {{ work.startDate | date : 'dd/MM/yyyy' }} -

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { WorkHttpService } from './work-http.service';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { WorkModel } from '../_models/work.model';
+import { HandleHttpMessageServiceService } from 'src/app/modules/partials/_services/handle-http-message-service.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorkService {
-  constructor(private workHttpService: WorkHttpService) {}
+  constructor(private workHttpService: WorkHttpService, private handleMessage: HandleHttpMessageServiceService) {}
 
   getWorks(sprintId: number, params?: any): Observable<WorkModel[]> {
     return this.workHttpService.getWorks(sprintId, params).pipe(
@@ -29,6 +30,9 @@ export class WorkService {
     return this.workHttpService.createWork(data).pipe(
       map((res: any) => {
         return res;
+      }),
+      tap(() => {
+        this.handleMessage.showSuccess('Tạo công việc thành công!');
       }),
       catchError((err) => {
         console.log(err);
@@ -56,6 +60,9 @@ export class WorkService {
       map((res: any) => {
         return res;
       }),
+      tap(() => {
+        this.handleMessage.showSuccess('Cập nhật thành công!');
+      }),
       catchError((err) => {
         console.log(err);
         return of(undefined);
@@ -68,6 +75,9 @@ export class WorkService {
       map((res: any) => {
         return res;
       }),
+      tap(() => {
+        this.handleMessage.showSuccess('Xoá thành công!');
+      }),
       catchError((err) => {
         console.log(err);
         return of(undefined);
@@ -79,6 +89,9 @@ export class WorkService {
     return this.workHttpService.addFilesToWork(id, data).pipe(
       map((res: any) => {
         return res;
+      }),
+      tap(() => {
+        this.handleMessage.showSuccess('Thêm file thành công!');
       }),
       catchError((err) => {
         console.log(err);

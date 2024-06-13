@@ -19,4 +19,8 @@ export class CommentHttpService {
   getCommentsByTaskId(id: number): Observable<any> {
     return this.http.get<any>(`${API_COMMENT_URL}/task/${id}`);
   }
+
+  deleteComment(id: number): Observable<any> {
+    return this.http.delete<any>(`${API_COMMENT_URL}/${id}`);
+  }
 }

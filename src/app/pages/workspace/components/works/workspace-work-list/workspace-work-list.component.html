@@ -1,6 +1,6 @@
 <app-header-title
   [breadcrumbTitles]="[{ name: 'Danh sách công việc', routerLink: '' }]"
-  [buttonName]="'Thêm chu kỳ'"
+  [buttonName]="currentWorkspace?.myInfo?.role === memberRoleEnum.MEMBER ? '' : 'Thêm chu kỳ'"
   (handleClick)="openModalCreateSprint()"
 ></app-header-title>
 
